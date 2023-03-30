@@ -12,3 +12,16 @@ https://www.figma.com/file/Fx6Jn1DtgQjc8ggFPeRWnU/chess?node-id=0%3A1&t=eruCsbMA
 - The chess game itself
 - Statistics of played games for each user
 ### Data models description
+#### User
+- id
+- username
+- password_hash
+- avatar
+#### Game
+- id
+- beginning_timestamp
+- ending_timestamp
+- white_player_id
+- black_player_id
+- time_limit
+- result (white win, black win, draw)
