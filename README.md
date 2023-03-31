@@ -10,6 +10,7 @@ https://www.figma.com/file/Fx6Jn1DtgQjc8ggFPeRWnU/chess?node-id=0%3A1&t=eruCsbMA
 - Registration
 - Creation of a game room, link to which can be used to connect to the room
 - The chess game itself
+- Offering a draw or resigning the game
 - Statistics of played games for each user
 ### Data models description
 #### User
