@@ -1,7 +1,7 @@
 # Online Chess
 ## Yermakov Anton, 053502
 ### Description
-Online chess for two players.
+Online chess for two players. As a reference, see chess.com or lichess.org
 ### Mock up
 Figma project can be found here:  
 https://www.figma.com/file/Fx6Jn1DtgQjc8ggFPeRWnU/chess?node-id=0%3A1&t=eruCsbMArYQ5B8qw-1
