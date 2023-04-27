@@ -1,8 +1,9 @@
-.header__site-name {
+.header__slogan {
     display: inline-block;
     color: white;
     font-style: normal;
     font-weight: 700;
-    font-size: 36px;
-    line-height: 58px;
+    font-size: 20px;
+    line-height: 39px;
+    padding-left: 30px;
 }
