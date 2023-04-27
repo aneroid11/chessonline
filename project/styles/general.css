@@ -2,6 +2,7 @@
 @import url('./header/header.css');
 @import url('./footer/footer.css');
 @import url('./board/board.css');
+@import url('./game-field/game-field.css');
 @import url('./button/button.css');
 @import url('./login-form/login-form.css');
 
