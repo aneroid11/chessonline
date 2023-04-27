@@ -1,6 +1,9 @@
+@import url("_color/button_color_green.css");
+@import url("_color/button_color_gray.css");
+
 .button {
     border-radius: 13px;
-    background-color: #4C4C4C;
+    /*background-color: #4C4C4C;*/
     border: none;
     color: white;
     padding: 15px 32px;
