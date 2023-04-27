@@ -3,6 +3,7 @@
 @import url('./footer/footer.css');
 @import url('./board/board.css');
 @import url('./button/button.css');
+@import url('./login-form/login-form.css');
 
 body {
     background: #342E2E;
