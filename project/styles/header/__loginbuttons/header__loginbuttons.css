@@ -1,7 +1,12 @@
 /* all links inside class="header__loginbuttons" */
 .header__loginbuttons {
+    text-align: center;
     display: inline-block;
     float: right;
+}
+
+header__loginbuttons, a {
+    margin-bottom: 10px
 }
 
 /*
