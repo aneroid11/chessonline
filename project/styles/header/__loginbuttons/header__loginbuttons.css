@@ -5,7 +5,7 @@
     float: right;
 }
 
-header__loginbuttons, a {
+.header__loginbuttons, a {
     margin-bottom: 10px
 }
 
