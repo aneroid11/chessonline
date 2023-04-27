@@ -7,4 +7,9 @@
     background-color: #342E2E;
     border-radius: 3px;
     border: 1px solid white;
+    outline: none;
+}
+
+.login-form__field:focus {
+    border: 3px solid white;
 }
