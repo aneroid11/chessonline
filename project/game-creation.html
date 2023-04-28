@@ -7,7 +7,7 @@
     <title>Chess online</title>
 </head>
 <body>
-    <header>
+    <header class="header">
         <div class="header__site-name">
             CHESS
         </div>
@@ -20,7 +20,7 @@
             </div>
             <div>
                 <label class="">
-                    <input type="radio" name="time-limit" value="5min" />
+                    <input type="radio" name="time-limit" value="5min" checked />
                     5 min
                 </label>
             </div>
@@ -42,6 +42,20 @@
                     Random
                 </label>
             </div>
+
+            <label class="">
+                <input type="radio" name="color" value="white" checked />
+                white
+            </label>
+            <label class="">
+                <input type="radio" name="color" value="black" />
+                black
+            </label>
+            <label class="">
+                <input type="radio" name="color" value="random" />
+                random
+            </label>
+            <br>
             <input class="button button_color_green" type="submit" value="Create Game!">
         </form>
     </main>
