@@ -1,9 +1,9 @@
-.game-creation-form__time-limit-option {
-    width: 100px;
+.game-creation-form__color-option {
+    width: 40px;
+    height: 40px;
     display: inline-block;
     color: black;
     background-color: #D9D9D9;
-    padding: 15px 32px;
     border-radius: 5px;
     text-align: center;
     font-size: 16px;

@@ -17,27 +17,34 @@
         <form action="" class="game-creation-form">
             <p class="game-creation-form__title">Game Creation</p>
             <p>
-                <input id="5min" type="radio" name="time-limit" value="5min" />
+                <input id="5min" type="radio" name="time-limit" value="5min" required />
                 <label for="5min" class="game-creation-form__time-limit-option">5 min</label>
             </p>
             <p>
-                <input id="15min" type="radio" name="time-limit" value="15min" />
+                <input id="15min" type="radio" name="time-limit" value="15min" required />
                 <label for="15min" class="game-creation-form__time-limit-option">15 min</label>
             </p>
-            <!--
             <p>
-                <label class="game-creation-form__time-limit-option">
-                    <input type="radio" name="time-limit" value="30min" />
-                    30 min
-                </label>
+                <input id="30min" type="radio" name="time-limit" value="30min" required />
+                <label for="30min" class="game-creation-form__time-limit-option">30 min</label>
             </p>
             <p>
-                <label class="game-creation-form__time-limit-option">
-                    <input type="radio" name="time-limit" value="random" />
-                    Random
-                </label>
+                <input id="random_limit" type="radio" name="time-limit" value="random" required />
+                <label for="random_limit" class="game-creation-form__time-limit-option">Random</label>
             </p>
-            -->
+
+            <input id="white" type="radio" name="color" value="white" required />
+            <label for="white">
+                <img class="game-creation-form__color-option" src="img/queen_white.svg" alt="White">
+            </label>
+            <input id="black" type="radio" name="color" value="black" required />
+            <label for="black">
+                <img class="game-creation-form__color-option" src="img/queen_black.svg" alt="Black">
+            </label>
+            <input id="random_color" type="radio" name="color" value="random" required />
+            <label for="random_color">
+                <img class="game-creation-form__color-option" src="img/random.svg" alt="Random">
+            </label>
 
             <!--
             <p>
