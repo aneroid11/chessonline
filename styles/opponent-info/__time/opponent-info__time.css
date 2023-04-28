@@ -1,4 +1,9 @@
 .opponent-info__time {
+    text-align: center;
     display: inline-block;
     float: right;
+    color: black;
+    width: 100px;
+    border-radius: 5px;
+    background-color: white;
 }
