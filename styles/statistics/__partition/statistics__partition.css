@@ -1,6 +1,7 @@
 .statistics__partition {
     /*display: inline-block;*/
-    display: table-cell;
+    /*display: table-cell;*/
+    display: block;
     color: white;
 }
 
