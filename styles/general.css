@@ -9,6 +9,7 @@
 @import url('./statistics/statistics.css');
 @import url('./account-navigation/account-navigation.css');
 @import url('./opponent-info/opponent-info.css');
+@import url('./message-at-center/message-at-center.css');
 
 body {
     background: #342E2E;
