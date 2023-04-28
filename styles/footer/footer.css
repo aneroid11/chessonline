@@ -1,13 +1,18 @@
 .footer {
+    display: block;
+    width: 100%;
+    background-color: #4C4C4C;
+    text-align: right;
+    padding-top: 15px;
+    padding-bottom: 15px;
+
     font-style: normal;
     font-weight: 400;
     font-size: 16px;
-    line-height: 19px;
-    display: flex;
     color: white;
     /*float: right;*/
     /*position: absolute;*/
     position: fixed;
-    right: 10px;
-    bottom: 10px;
+    bottom: 0;
+    left: 0;
 }
