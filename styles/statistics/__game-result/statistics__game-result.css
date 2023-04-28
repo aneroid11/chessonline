@@ -1,0 +1,11 @@
+.statistics__game-result {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    font-weight: 400;
+    width: 69%;
+    height: 100px;
+    background-color: #0E301E;
+    padding-top: 10px;
+    padding-left: 20px;
+}

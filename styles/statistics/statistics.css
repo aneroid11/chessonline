@@ -1,5 +1,6 @@
 @import url("__partition/statistics__partition.css");
 @import url("__results-list/statistics__results-list.css");
+@import url("__game-result/statistics__game-result.css");
 
 .statistics {
     width: 100%;
