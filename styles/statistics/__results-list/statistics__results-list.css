@@ -1,9 +1,10 @@
 .statistics__results-list {
+    overflow-y: auto;
+
     box-sizing: border-box;
     background-color: #A6EFAE;
     margin: auto;
     width: 300px;
     height: 500px;
     border-radius: 26px;
-    padding-top: 10px;
 }
