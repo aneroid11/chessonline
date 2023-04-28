@@ -5,6 +5,7 @@
 @import url('./game-field/game-field.css');
 @import url('./button/button.css');
 @import url('./login-form/login-form.css');
+@import url('./game-creation-form/game-creation-form.css');
 
 body {
     background: #342E2E;
