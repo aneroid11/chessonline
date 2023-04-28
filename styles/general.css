@@ -7,9 +7,8 @@
 @import url('./login-form/login-form.css');
 @import url('./game-creation-form/game-creation-form.css');
 @import url('./statistics/statistics.css');
-/*@import url('./statistics-partition/statistics-partition.css');*/
 @import url('./account-navigation/account-navigation.css');
-/*@import url('./game-results-list/game-results-list.css');*/
+@import url('./opponent-info/opponent-info.css');
 
 body {
     background: #342E2E;
