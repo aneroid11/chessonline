@@ -4,12 +4,16 @@
     color: white;
 }
 
+.statistics__partition h1 {
+    text-align: center;
+}
+
 @media only screen and (max-width: 960px) {
     .statistics__partition {
         display: block;
     }
-}
 
-.statistics__partition h1 {
-    text-align: center;
+    .statistics__partition h1 {
+        font-size: 18px;
+    }
 }
