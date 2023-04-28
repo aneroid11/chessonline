@@ -1,4 +1,5 @@
 .statistics-partition {
-    display: inline-block;
+    /*display: inline-block;*/
+    display: table-cell;
     color: white;
 }
