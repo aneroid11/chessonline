@@ -1,9 +1,9 @@
-.statistics-partition {
+.statistics__partition {
     /*display: inline-block;*/
     display: table-cell;
     color: white;
 }
 
-.statistics-partition h1 {
+.statistics__partition h1 {
     text-align: center;
 }
