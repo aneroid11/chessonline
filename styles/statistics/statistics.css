@@ -1,4 +1,5 @@
 @import url("__partition/statistics__partition.css");
+@import url("__results-list/statistics__results-list.css");
 
 .statistics {
     width: 100%;
