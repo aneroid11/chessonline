@@ -1,6 +1,8 @@
 .board {
     width: 330px;
     height: 330px;
+    margin-right: auto;
+    margin-left: auto;
     background-image: url("../../img/chessboard.png");
     background-size: contain;
     background-repeat: no-repeat;
