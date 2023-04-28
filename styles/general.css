@@ -6,6 +6,7 @@
 @import url('./button/button.css');
 @import url('./login-form/login-form.css');
 @import url('./game-creation-form/game-creation-form.css');
+@import url('./account-edit-form/account-edit-form.css');
 @import url('./account-navigation/account-navigation.css');
 
 body {
