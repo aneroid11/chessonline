@@ -8,3 +8,10 @@
     height: 500px;
     border-radius: 26px;
 }
+
+@media only screen and (max-width: 960px) {
+    .statistics__results-list {
+        height: 135px;
+        width: 80%;
+    }
+}

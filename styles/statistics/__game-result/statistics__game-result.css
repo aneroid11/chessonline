@@ -8,3 +8,8 @@
     padding-bottom: 10px;
     padding-left: 20px;
 }
+
+@media only screen and (max-width: 960px) {
+    .statistics__game-result {
+    }
+}

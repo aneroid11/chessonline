@@ -6,3 +6,9 @@
     width: 100%;
     display: table
 }
+
+@media only screen and (max-width: 960px) {
+    .statistics {
+        display: block;
+    }
+}
