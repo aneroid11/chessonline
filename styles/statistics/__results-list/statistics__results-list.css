@@ -1,5 +1,5 @@
 .statistics__results-list {
-    overflow-y: auto;
+    overflow: auto;
 
     box-sizing: border-box;
     background-color: #A6EFAE;
@@ -11,6 +11,8 @@
 
 @media only screen and (max-width: 960px) {
     .statistics__results-list {
+        /*overflow-x: auto;*/
+        white-space: nowrap;
         height: 135px;
         width: 80%;
     }
