@@ -4,4 +4,6 @@
 @import url('./__acc-image/header__acc-image.css');
 
 .header {
+    display: flex;
+    justify-content: space-between;
 }
