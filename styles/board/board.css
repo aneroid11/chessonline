@@ -5,6 +5,5 @@
     margin-left: auto;
     background-image: url("../../img/chessboard.png");
     background-size: contain;
-    background-repeat: no-repeat;
     border-radius: 3px;
 }
