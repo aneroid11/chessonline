@@ -1,8 +1,8 @@
 .game-field {
     margin-left: auto;
     margin-right: auto;
+    margin-top: 10px;
     text-align: center;
-    padding-top: 10px;
     width: 330px;
 }
 
