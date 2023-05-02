@@ -1,9 +1,7 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
+import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
+// import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js';
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyDCUea-F9S2qmzHY3ib0Paav9dBYq2rXYI",
     authDomain: "aneroid11-chess.firebaseapp.com",
@@ -14,6 +12,16 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+// const app = initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig)
 
 console.log('START!')
+
+const db = getDatabase()
+const gameRoomsRef = ref(db, '/rooms')
+const room = {
+    id: "dasodkaofkqokoqwk"
+}
+// gameRoomsRef.push(room)
+set(gameRoomsRef, room)
+// const gameRoomsRef = ref("/rooms")
