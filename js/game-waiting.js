@@ -15,7 +15,7 @@ else if (urlParams.has("game-id")) {
     console.log("connect to game " + gameId)
 }
 else {
-    console.log("wtf?")
+    window.location.replace("game-creation.html")
 }
 
 // console.log(urlParams.get("time-limit"))
