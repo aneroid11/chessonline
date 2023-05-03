@@ -17,11 +17,10 @@ if (urlParams.has("time-limit")) {
     }
 
     console.log("push")
+    // wait for the promise
     const roomRef = await push(app.gameRoomsRef, newRoom)
     console.log("just after push")
-    // const newUrl = new URL("game-waiting.html")
-    // newUrl.searchParams.append("game-id", roomKey)
-    window.location.href = `game-waiting.html?game-id=${roomRef.key}`
+    window.location.replace(`game-waiting.html?game-id=${roomRef.key}`)
 }
 else if (urlParams.has("game-id")) {
     // this is a connection to an existing game
@@ -29,8 +28,7 @@ else if (urlParams.has("game-id")) {
     console.log("connect to game " + gameId)
 }
 else {
-    // window.location.replace("game-creation.html")
-    window.location.href = "game-creation.html"
+    window.location.replace("game-creation.html")
 }
 
 // console.log(urlParams.get("time-limit"))
