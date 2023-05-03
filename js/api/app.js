@@ -2,7 +2,7 @@ import {getApps, initializeApp} from "https://www.gstatic.com/firebasejs/9.15.0/
 import {getDatabase, ref} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
 // import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js';
 
-console.log(getApps())
+// console.log(getApps())
 
 const firebaseConfig = {
     apiKey: "AIzaSyDCUea-F9S2qmzHY3ib0Paav9dBYq2rXYI",

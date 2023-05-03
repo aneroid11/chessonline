@@ -1,4 +1,4 @@
-import {push} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
+import {push, child, get} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
 import * as app from "./api/app.js"
 
 const queryString = window.location.search
@@ -26,9 +26,18 @@ else if (urlParams.has("game-id")) {
     // this is a connection to an existing game
     const gameId = urlParams.get("game-id")
     console.log("connect to game " + gameId)
+
+    const roomRef = child(app.gameRoomsRef, gameId)
+    get(roomRef).then((snapshot) => {
+        if (snapshot.exists()) {
+            console.log("has such room!")
+        }
+        else {
+            console.log("no such room!")
+            window.location.replace("game-creation.html")
+        }
+    })
 }
 else {
     window.location.replace("game-creation.html")
 }
-
-// console.log(urlParams.get("time-limit"))
