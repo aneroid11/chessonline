@@ -31,6 +31,8 @@ else if (urlParams.has("game-id")) {
     get(roomRef).then((snapshot) => {
         if (snapshot.exists()) {
             console.log("has such room!")
+            const gameLink = document.getElementById("game-link")
+            gameLink.textContent = window.location.href
         }
         else {
             console.log("no such room!")
