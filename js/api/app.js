@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
-import { getDatabase, ref, push, set, child, remove } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
+import { getDatabase, ref, push, set, child, remove, update } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
 // import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js';
 
 const firebaseConfig = {
@@ -23,12 +23,14 @@ const gameRoomsRef = ref(db, '/rooms')
 const gameId = push(gameRoomsRef, {
     numPlayers: 1
 })
-console.log(gameId.key)
+const gameKey = gameId.key
 
-push(gameRoomsRef, {
-    numPlayers: 2
+// push(gameRoomsRef, {
+//     numPlayers: 2
+// })
+
+set(child(gameRoomsRef, gameKey), {
+    "numPlayers": 5
 })
 
-// remove(gameId)
-
-// remove(child(gameRoomsRef, "dasodkaofkqokoqwk"))
+// remove(child(gameRoomsRef, gameKey))
