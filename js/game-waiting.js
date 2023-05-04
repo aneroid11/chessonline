@@ -12,7 +12,7 @@ if (urlParams.has("time-limit")) {
     const newRoom = {
         "timeLimit": timeLimit,
         "color": color,
-        "firstPlayer": null,
+        "firstPlayer": "Ibrahim",
         "secondPlayer": null
     }
 
@@ -30,12 +30,21 @@ else if (urlParams.has("game-id")) {
     const roomRef = child(app.gameRoomsRef, gameId)
     get(roomRef).then((snapshot) => {
         if (snapshot.exists()) {
-            console.log("has such room!")
+            const data = snapshot.val()
+
+            console.log(data)
+
+            // if (data.get("secondPlayer") == null) {
+            //     data["secondPlayer"] = "Ahmed"
+            // }
+            // else {
+            //     window.location.replace("game-running.html")
+            // }
+
             const gameLink = document.getElementById("game-link")
             gameLink.textContent = window.location.href
         }
         else {
-            console.log("no such room!")
             window.location.replace("game-creation.html")
         }
     })
