@@ -16,6 +16,11 @@ const db = getDatabase(app)
 const gameRoomsRef = ref(db, '/rooms')
 const auth = getAuth()
 
+const errors = {
+    "auth/invalid-email": "Invalid email!",
+    "auth/email-in-use": "Email already in use!"
+}
+
 async function createUser(email, password) {
     try {
         const response = await createUserWithEmailAndPassword(auth, email, password)
@@ -23,7 +28,7 @@ async function createUser(email, password) {
     }
     catch (error) {
         console.log(error)
-        return null
+        return errors[error.code]
     }
 }
 

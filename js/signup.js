@@ -23,14 +23,14 @@ function checkPasswordMatchesRepeatPassword(event) {
 async function signUp(event) {
     event.preventDefault()
 
-    const user = await createUser(email.value, pass1Input.value)
-
-    if (user != null) {
-        document.cookie = `user=${user.uid}`
-        console.log(user.uid)
+    const result = await createUser(email.value, pass1Input.value)
+    if (typeof result !== "string") {
+        document.cookie = `user=${result.uid}`
+        console.log(result.uid)
     }
     else {
-        email.style.borderColor = 'red'
+        document.getElementById("signup-form-error").textContent = result
+        // email.style.borderColor = 'red'
     }
 }
 

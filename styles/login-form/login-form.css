@@ -10,3 +10,8 @@
     text-align: center;
     padding-top: 30px;
 }
+
+.login-form label {
+    font-size: 18px;
+    color: white;
+}
