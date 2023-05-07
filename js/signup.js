@@ -20,12 +20,12 @@ function checkPasswordMatchesRepeatPassword(event) {
     }
 }
 
-function signUp(event) {
-    // console.log("sign up user:")
-    // console.log(email.value)
-    // console.log(pass1Input.value)
-
-    createUser(email.value, pass1Input.value)
+async function signUp(event) {
+    event.preventDefault()
+    
+    let user = await createUser(email.value, pass1Input.value)
+    document.cookie = `user=${user.id}`
+    console.log(user.id)
 }
 
 
