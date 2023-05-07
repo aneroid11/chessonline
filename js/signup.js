@@ -30,6 +30,7 @@ async function signUp(event) {
         window.location.replace("index-logged.html")
     }
     else {
+        console.log("hello world!")
         document.getElementById("signup-form-error").textContent = result
     }
 }

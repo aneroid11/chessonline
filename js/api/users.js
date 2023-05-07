@@ -21,7 +21,7 @@ const auth = getAuth()
 
 const errors = {
     "auth/invalid-email": "Invalid email!",
-    "auth/email-in-use": "Email already in use!",
+    "auth/email-already-in-use": "Email already in use!",
     "auth/wrong-password": "Wrong password!",
     "auth/user-not-found": "User not found!"
 }
