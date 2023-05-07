@@ -22,10 +22,16 @@ function checkPasswordMatchesRepeatPassword(event) {
 
 async function signUp(event) {
     event.preventDefault()
-    
-    let user = await createUser(email.value, pass1Input.value)
-    document.cookie = `user=${user.id}`
-    console.log(user.id)
+
+    const user = await createUser(email.value, pass1Input.value)
+
+    if (user != null) {
+        document.cookie = `user=${user.uid}`
+        console.log(user.uid)
+    }
+    else {
+        email.style.borderColor = 'red'
+    }
 }
 
 

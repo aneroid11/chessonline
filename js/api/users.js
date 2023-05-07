@@ -17,11 +17,14 @@ const gameRoomsRef = ref(db, '/rooms')
 const auth = getAuth()
 
 async function createUser(email, password) {
-    console.log("asokadso")
-    console.log(email)
-    console.log(password)
-    const response = await createUserWithEmailAndPassword(auth, email, password)
-    return response.user
+    try {
+        const response = await createUserWithEmailAndPassword(auth, email, password)
+        return response.user
+    }
+    catch (error) {
+        console.log(error)
+        return null
+    }
 }
 
 export { app, db, gameRoomsRef, createUser }
