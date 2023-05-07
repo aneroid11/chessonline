@@ -1,5 +1,10 @@
 import {push, child, get} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
 import * as app from "./app.js"
+import { userIsAuthenticated } from "./app.js";
+
+if (!userIsAuthenticated()) {
+    window.location.href = "login.html"
+}
 
 const queryString = window.location.search
 const urlParams = new URLSearchParams(queryString)
