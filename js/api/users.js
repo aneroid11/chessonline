@@ -1,6 +1,6 @@
 import {initializeApp} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
 import {getDatabase, ref} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
-import {createUserWithEmailAndPassword, getAuth} from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js';
+import {createUserWithEmailAndPassword, signOut, getAuth} from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js';
 
 const firebaseConfig = {
     apiKey: "AIzaSyDCUea-F9S2qmzHY3ib0Paav9dBYq2rXYI",
@@ -32,4 +32,8 @@ async function createUser(email, password) {
     }
 }
 
-export { app, db, gameRoomsRef, createUser }
+async function signOutUser() {
+    await signOut(auth)
+}
+
+export { app, db, gameRoomsRef, createUser, signOutUser }

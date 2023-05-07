@@ -25,8 +25,9 @@ async function signUp(event) {
 
     const result = await createUser(email.value, pass1Input.value)
     if (typeof result !== "string") {
-        document.cookie = `user=${result.uid}`
+        document.cookie = `user=${result.uid};`
         console.log(result.uid)
+        window.location.replace("index-logged.html")
     }
     else {
         document.getElementById("signup-form-error").textContent = result
