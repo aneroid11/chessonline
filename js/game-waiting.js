@@ -1,5 +1,5 @@
 import {push, child, get} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
-import * as app from "./api/app.js"
+import * as app from "./app.js"
 
 const queryString = window.location.search
 const urlParams = new URLSearchParams(queryString)

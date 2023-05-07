@@ -20,4 +20,8 @@ const db = getDatabase(app)
 console.log("get game rooms ref")
 const gameRoomsRef = ref(db, '/rooms')
 
-export { app, db, gameRoomsRef }
+function userIsAuthenticated() {
+    return document.cookie.includes("user=")
+}
+
+export { app, db, gameRoomsRef, userIsAuthenticated }
