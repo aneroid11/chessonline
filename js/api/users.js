@@ -1,6 +1,9 @@
 import {initializeApp} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
 import {getDatabase, ref} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
-import {createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, getAuth} from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js';
+import {
+    deleteUser, reauthenticateWithCredential, EmailAuthProvider,
+    createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, getAuth
+} from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js';
 
 const firebaseConfig = {
     apiKey: "AIzaSyDCUea-F9S2qmzHY3ib0Paav9dBYq2rXYI",
@@ -45,8 +48,25 @@ async function signInUser(email, password) {
     }
 }
 
+async function reauthenticateUser(password) {
+    const creds = EmailAuthProvider.credential(auth.currentUser.email, password)
+
+    try {
+        const response = await reauthenticateWithCredential(auth.currentUser, creds)
+        return response.user
+    }
+    catch (error) {
+        console.log(error)
+        return errors[error.code]
+    }
+}
+
 async function signOutUser() {
     await signOut(auth)
 }
 
-export { app, db, gameRoomsRef, createUser, signOutUser, signInUser }
+async function deleteCurrentUser() {
+    await deleteUser(auth.currentUser)
+}
+
+export { app, db, gameRoomsRef, createUser, signOutUser, signInUser, reauthenticateUser, deleteCurrentUser }

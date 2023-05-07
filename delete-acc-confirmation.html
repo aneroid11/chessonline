@@ -21,17 +21,22 @@
     <section class="account-navigation">
         <img src="img/account_circle.svg" alt="My account">
         <h1>Anton</h1>
-        <div class="message">
-            Really delete?<br>
-            <a style="width: auto; float: left; margin-left: 50px" class="button button_color_gray"
-               href="index.html">
-                Yes
-            </a>
-            <a style="width: auto; float: right; margin-right: 50px" class="button button_color_green"
-               href="account.html">
-                No
-            </a>
-        </div>
+        <form id="delete-acc-form" class="login-form">
+            <label id="delete-acc-title">Please enter your password.</label>
+            <input id="delete-acc-password" class="login-form__field" type="password" minlength="6" maxlength="64"
+                   placeholder="password" name="password" required>
+            <input class="button button_color_green" type="submit" value="Delete my account">
+        </form>
+<!--        <div class="message">-->
+<!--            Really delete?<br>-->
+<!--            <a id="delete-yes" style="width: auto; float: left; margin-left: 50px" class="button button_color_gray">-->
+<!--                Yes-->
+<!--            </a>-->
+<!--            <a id="delete-no" style="width: auto; float: right; margin-right: 50px" class="button button_color_green"-->
+<!--               href="account.html">-->
+<!--                No-->
+<!--            </a>-->
+<!--        </div>-->
     </section>
 </main>
 <footer class="footer">
