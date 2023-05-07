@@ -17,11 +17,11 @@
         </div>
     </header>
     <main>
-        <form style="padding-top: 130px" action="index-logged.html" class="login-form">
-            <input class="login-form__field" type="text" maxlength="20" placeholder="username" name="username" required>
-            <input class="login-form__field" type="password" maxlength="64" placeholder="password" name="password" required>
-            <input class="login-form__field" type="password" maxlength="64" placeholder="repeat password" name="repeat_password" required>
-            <input class="button button_color_green" type="submit" value="Sign up!">
+        <form id="signup-form" style="padding-top: 130px" action="index-logged.html" class="login-form">
+            <input class="login-form__field" type="email" maxlength="30" placeholder="email" name="email" required>
+            <input id="password" class="login-form__field" type="password" maxlength="64" placeholder="password" name="password" required>
+            <input id="repeat-password" class="login-form__field" type="password" maxlength="64" placeholder="repeat password" name="repeat_password" required>
+            <input id="signup-button" class="button button_color_green" type="submit" value="Sign up!">
             </form>
     </main>
     <footer class="footer">
