@@ -17,9 +17,10 @@
         </div>
     </header>
     <main>
-        <form style="padding-top: 130px" action="index-logged.html" class="login-form">
-            <input class="login-form__field" type="email" maxlength="30" placeholder="email" name="email" required>
-            <input class="login-form__field" type="password" maxlength="64" placeholder="password" name="password" required>
+        <form id="login-form" style="padding-top: 130px" action="index-logged.html" class="login-form">
+            <label id="login-error"></label>
+            <input id="login-email" class="login-form__field" type="email" maxlength="30" placeholder="email" name="email" required>
+            <input id="login-password" class="login-form__field" type="password" maxlength="64" placeholder="password" name="password" required>
             <input class="button button_color_green" type="submit" value="Log in!">
         </form>
     </main>

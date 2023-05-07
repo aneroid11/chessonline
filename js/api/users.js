@@ -1,6 +1,6 @@
 import {initializeApp} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
 import {getDatabase, ref} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
-import {createUserWithEmailAndPassword, signOut, getAuth} from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js';
+import {createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, getAuth} from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js';
 
 const firebaseConfig = {
     apiKey: "AIzaSyDCUea-F9S2qmzHY3ib0Paav9dBYq2rXYI",
@@ -18,7 +18,9 @@ const auth = getAuth()
 
 const errors = {
     "auth/invalid-email": "Invalid email!",
-    "auth/email-in-use": "Email already in use!"
+    "auth/email-in-use": "Email already in use!",
+    "auth/wrong-password": "Wrong password!",
+    "auth/user-not-found": "User not found!"
 }
 
 async function createUser(email, password) {
@@ -32,8 +34,19 @@ async function createUser(email, password) {
     }
 }
 
+async function signInUser(email, password) {
+    try {
+        const response = await signInWithEmailAndPassword(auth, email, password)
+        return response.user
+    }
+    catch (error) {
+        console.log(error)
+        return errors[error.code]
+    }
+}
+
 async function signOutUser() {
     await signOut(auth)
 }
 
-export { app, db, gameRoomsRef, createUser, signOutUser }
+export { app, db, gameRoomsRef, createUser, signOutUser, signInUser }

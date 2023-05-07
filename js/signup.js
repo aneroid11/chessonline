@@ -31,7 +31,6 @@ async function signUp(event) {
     }
     else {
         document.getElementById("signup-form-error").textContent = result
-        // email.style.borderColor = 'red'
     }
 }
 
