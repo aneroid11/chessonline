@@ -8,6 +8,7 @@ if (userIsAuthenticated()) {
 
 const signupButton = document.getElementById("signup-button")
 const email = document.getElementById("login")
+const nameInput = document.getElementById("name")
 const pass1Input = document.getElementById("password")
 const pass2Input = document.getElementById("repeat-password")
 
@@ -23,7 +24,7 @@ function checkPasswordMatchesRepeatPassword(event) {
 async function signUp(event) {
     event.preventDefault()
 
-    const result = await createUser(email.value, pass1Input.value)
+    const result = await createUser(nameInput.value, email.value, pass1Input.value)
     if (typeof result !== "string") {
         document.cookie = `user=${result.uid};`
         console.log(result.uid)

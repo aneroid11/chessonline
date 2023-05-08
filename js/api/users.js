@@ -1,8 +1,9 @@
 import {initializeApp} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
-import {getDatabase, ref} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
+import {getDatabase, ref, set, remove, child} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
 import {
     deleteUser, reauthenticateWithCredential, EmailAuthProvider,
-    createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, getAuth
+    createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, getAuth,
+    onAuthStateChanged, updateProfile
 } from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js';
 
 const firebaseConfig = {
@@ -17,6 +18,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig)
 const db = getDatabase(app)
 const gameRoomsRef = ref(db, '/rooms')
+const usersRef = ref(db, "/users")
 const auth = getAuth()
 
 const errors = {
@@ -26,9 +28,11 @@ const errors = {
     "auth/user-not-found": "User not found!"
 }
 
-async function createUser(email, password) {
+async function createUser(name, email, password) {
     try {
         const response = await createUserWithEmailAndPassword(auth, email, password)
+        //await set(usersRef + response.uid, { "name": name })
+        await set(ref(db,"users/" + response.user.uid), {"name": name})
         return response.user
     }
     catch (error) {
@@ -66,6 +70,7 @@ async function signOutUser() {
 }
 
 async function deleteCurrentUser() {
+    await remove(child(usersRef, auth.currentUser.uid))
     await deleteUser(auth.currentUser)
 }
 
