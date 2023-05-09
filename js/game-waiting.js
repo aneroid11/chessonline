@@ -53,13 +53,13 @@ async function startGame() {
                 return true
             case INPUT_EVENT_TYPE.validateMoveInput:
                 // return true, if input is accepted/valid, `false` takes the move back
-                updateRoomData(gameId, {"position": window.chessboard.getPosition()});
+                // updateRoomData(gameId, {"position": window.chessboard.getPosition()});
                 return true
             case INPUT_EVENT_TYPE.moveInputCanceled:
                 // console.log(`moveInputCanceled`)
                 break;
         }
-    });
+    }, amIWhite(roomData) ? COLOR.white : COLOR.black);
 }
 
 async function main() {
@@ -93,8 +93,6 @@ async function main() {
             roomData["time-limit"];
         document.getElementById("game-waiting-bottom-time-left").textContent =
             roomData["time-limit"];
-
-        // let pageRefreshed = true;
 
         listenForRoomUpdates(gameId, async (updatedRoomData) => {
             if (
