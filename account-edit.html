@@ -18,15 +18,17 @@
         </div>
     </header>
     <main>
-        <form action="account.html" class="login-form">
+        <form id="acc-edit-form" action="" class="login-form">
             <img width="80" style="margin-left: auto; margin-right: auto;" src="img/account_circle.svg" alt="My account">
             <input id="acc-edit-name" class="login-form__field" type="text" maxlength="20"
                    value="" placeholder="username" name="username" required>
-            <input class="login-form__field" type="password" maxlength="64" placeholder="password" name="password">
-            <input class="login-form__field" type="password" maxlength="64" placeholder="new password" name="new_password">
-            <input class="login-form__field" type="password" maxlength="64" placeholder="repeat new password"
-                       name="repeat_new_password">
-            <input class="button button_color_green" type="submit" value="Save Changes">
+            <input id="acc-edit-password" class="login-form__field" type="password" minlength="6"
+                   maxlength="64" placeholder="password" name="password">
+            <input id="acc-edit-new-password" class="login-form__field" type="password" minlength="6"
+                   maxlength="64" placeholder="new password" name="new_password">
+            <input id="acc-edit-repeat-password" class="login-form__field" type="password" minlength="6"
+                   maxlength="64" placeholder="repeat new password" name="repeat_new_password">
+            <input id="acc-edit-save-changes" class="button button_color_green" type="submit" value="Save Changes">
             <a href="account.html" class="button button_color_gray">Cancel</a>
         </form>
     </main>
