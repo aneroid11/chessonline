@@ -75,7 +75,7 @@ async function deleteCurrentUser() {
 }
 
 async function getUserProfileInfo() {
-
+    return {"name": "Ibrahim"}
 }
 
 export {
