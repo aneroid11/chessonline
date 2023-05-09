@@ -82,6 +82,11 @@ async function main() {
         window.location.replace("game-creation.html");
     }
     else {
+        document.getElementById("game-waiting-top-time-left").textContent =
+            roomData["time-limit"];
+        document.getElementById("game-waiting-bottom-time-left").textContent =
+            roomData["time-limit"];
+
         listenForRoomUpdates(gameId, async (updatedRoomData) => {
             if (typeof updatedRoomData["white"] === "string" && typeof updatedRoomData["black"] === "string") {
                 await updateUserNames(updatedRoomData);
@@ -92,8 +97,6 @@ async function main() {
 
         // const connectResult = await connectCurrUserToRoom(gameId, roomData);
         await connectCurrUserToRoom(gameId, roomData);
-        // await updateUserNames();
-        // await updateGameField();
     }
 }
 
