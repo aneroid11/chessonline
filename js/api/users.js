@@ -80,18 +80,17 @@ async function getUserProfileInfo() {
     if (document.cookie.includes('user=')) {
         const params = document.cookie.split(';');
         userId = params[0].split('=')[1];
-        alert(userId)
     }
     else {
         return null
     }
 
     try {
-        const response = await get(child(db, `users/${userId}`))
-        alert(response)
-        return {"name": "Ibrahim"}
+        const response = await get(ref(db,"users/" + userId))
+        return {"name": response.val().name}
     }
     catch (error) {
+        alert(error)
         return null
     }
 }
