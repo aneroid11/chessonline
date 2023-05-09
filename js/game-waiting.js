@@ -6,6 +6,10 @@ if (!userIsAuthenticated()) {
     window.location.href = "login.html"
 }
 
+// const gameId = urlParams.get("game-id");
+const gameLink = document.getElementById("game-link")
+gameLink.textContent = window.location.href
+
 // const queryString = window.location.search
 // const urlParams = new URLSearchParams(queryString)
 //
