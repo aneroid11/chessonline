@@ -11,4 +11,5 @@ const props = {
         cssClass: "green"
     }
 }
-const board = new Chessboard(document.getElementById("chess-board"), props);
+new Chessboard(document.getElementById("chess-board"), props);
+// await board.movePiece("e2", "e4", true)
