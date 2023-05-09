@@ -11,22 +11,18 @@ import {getProfileInfoByUid} from "./api/users.js";
 let roomData = {};
 const userNames = {};
 
-async function updateUserNames() {
+async function updateUserNames(roomData) {
     if (typeof roomData["white"] === "string") {
-        getProfileInfoByUid(roomData["white"]).then(async (profileInfo) => {
-            userNames["white"] = profileInfo["name"];
-            await updateGameField();
-        })
+        const profileInfo = await getProfileInfoByUid(roomData["white"]);
+        userNames["white"] = profileInfo["name"];
     }
     if (typeof roomData["black"] === "string") {
-        getProfileInfoByUid(roomData["black"]).then(async (profileInfo) => {
-            userNames["black"] = profileInfo["name"];
-            await updateGameField();
-        })
+        const profileInfo = await getProfileInfoByUid(roomData["black"]);
+        userNames["black"] = profileInfo["name"];
     }
 }
 
-async function updateGameField() {
+async function updateGameField(roomData) {
     if (amIWhite(roomData)) {
         document.getElementById("game-waiting-bottom-name").textContent =
             userNames["white"];
@@ -86,21 +82,18 @@ async function main() {
         window.location.replace("game-creation.html");
     }
     else {
-        await updateUserNames();
+        listenForRoomUpdates(gameId, async (updatedRoomData) => {
+            if (typeof updatedRoomData["white"] === "string" && typeof updatedRoomData["black"] === "string") {
+                await updateUserNames(updatedRoomData);
+                await updateGameField(updatedRoomData);
+                playGame();
+            }
+        });
 
-        const connectResult = await connectCurrUserToRoom(gameId, roomData);
-        // alert(connectResult);
-
-        if (connectResult === "can_play") {
-            playGame();
-        }
-        else {
-            listenForRoomUpdates(gameId, (updatedRoomData) => {
-                if (typeof updatedRoomData["white"] === "string" && typeof updatedRoomData["black"] === "string") {
-                    playGame();
-                }
-            });
-        }
+        // const connectResult = await connectCurrUserToRoom(gameId, roomData);
+        await connectCurrUserToRoom(gameId, roomData);
+        // await updateUserNames();
+        // await updateGameField();
     }
 }
 
