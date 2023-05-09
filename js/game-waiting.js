@@ -22,15 +22,14 @@ window.chessboard = new Chessboard(document.getElementById("chess-board"), props
 window.chessboard.enableMoveInput((event) => {
     switch (event.type) {
         case INPUT_EVENT_TYPE.moveInputStarted:
-            console.log(`moveInputStarted: ${event.square}`)
             // return `true`, if input is accepted/valid, `false` aborts the interaction, the piece will not move
             return true
         case INPUT_EVENT_TYPE.validateMoveInput:
-            console.log(`validateMoveInput: ${event.squareFrom}-${event.squareTo}`)
             // return true, if input is accepted/valid, `false` takes the move back
             return true
         case INPUT_EVENT_TYPE.moveInputCanceled:
-            console.log(`moveInputCanceled`)
+            // console.log(`moveInputCanceled`)
+            break;
     }
 });
 // await chessboard.movePiece("e2", "e4", true);
