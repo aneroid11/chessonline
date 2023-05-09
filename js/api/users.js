@@ -1,5 +1,5 @@
 import {initializeApp} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
-import {getDatabase, ref, set, remove, child, onChildAdded, onChildRemoved} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
+import {getDatabase, ref, set, remove, child, get} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
 import {
     deleteUser, reauthenticateWithCredential, EmailAuthProvider,
     createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, getAuth,
@@ -75,7 +75,25 @@ async function deleteCurrentUser() {
 }
 
 async function getUserProfileInfo() {
-    return {"name": "Ibrahim"}
+    let userId = ""
+
+    if (document.cookie.includes('user=')) {
+        const params = document.cookie.split(';');
+        userId = params[0].split('=')[1];
+        alert(userId)
+    }
+    else {
+        return null
+    }
+
+    try {
+        const response = await get(child(db, `users/${userId}`))
+        alert(response)
+        return {"name": "Ibrahim"}
+    }
+    catch (error) {
+        return null
+    }
 }
 
 export {
