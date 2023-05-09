@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap');
 @import url('./header/header.css');
 @import url('./footer/footer.css');
-@import url('./board/board.css');
 @import url('./game-field/game-field.css');
 @import url('./button/button.css');
 @import url('./login-form/login-form.css');

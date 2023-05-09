@@ -1,10 +1,11 @@
 import {userIsAuthenticated} from "./app.js";
-import {Chessboard, COLOR, FEN} from "https://cdn.jsdelivr.net/npm/cm-chessboard@7/src/cm-chessboard/Chessboard.js";
+import {
+    Chessboard,
+    COLOR,
+    FEN,
+    INPUT_EVENT_TYPE
+} from "https://cdn.jsdelivr.net/npm/cm-chessboard@7/src/cm-chessboard/Chessboard.js";
 import {getRoomData, connectCurrUserToRoom, listenForRoomUpdates} from "./api/rooms.js";
-
-function playGame() {
-    alert("play game");
-}
 
 if (!userIsAuthenticated()) {
     window.location.href = "login.html"
@@ -16,7 +17,23 @@ const props = {
         cssClass: "green"
     }
 }
-new Chessboard(document.getElementById("chess-board"), props);
+// const chessboard = new Chessboard(document.getElementById("chess-board"), props);
+window.chessboard = new Chessboard(document.getElementById("chess-board"), props);
+window.chessboard.enableMoveInput((event) => {
+    switch (event.type) {
+        case INPUT_EVENT_TYPE.moveInputStarted:
+            console.log(`moveInputStarted: ${event.square}`)
+            // return `true`, if input is accepted/valid, `false` aborts the interaction, the piece will not move
+            return true
+        case INPUT_EVENT_TYPE.validateMoveInput:
+            console.log(`validateMoveInput: ${event.squareFrom}-${event.squareTo}`)
+            // return true, if input is accepted/valid, `false` takes the move back
+            return true
+        case INPUT_EVENT_TYPE.moveInputCanceled:
+            console.log(`moveInputCanceled`)
+    }
+});
+// await chessboard.movePiece("e2", "e4", true);
 
 // const gameId = urlParams.get("game-id");
 const gameLink = document.getElementById("game-link")
@@ -34,7 +51,7 @@ if (roomData == null) {
 }
 else {
     const connectResult = await connectCurrUserToRoom(gameId, roomData);
-    alert(connectResult);
+    // alert(connectResult);
 
     if (connectResult === "can_play") {
         playGame();
@@ -50,47 +67,6 @@ else {
     }
 }
 
-// const queryString = window.location.search
-// const urlParams = new URLSearchParams(queryString)
-//
-// if (urlParams.has("time-limit")) {
-//     // this is a game creation
-//     const timeLimit = urlParams.get("time-limit")
-//     const color = urlParams.get("color")
-//
-//     const newRoom = {
-//         "timeLimit": timeLimit,
-//         "color": color,
-//         "firstPlayer": "Ibrahim",
-//         "secondPlayer": null
-//     }
-//
-//     console.log("push")
-//     // wait for the promise
-//     const roomRef = await push(app.gameRoomsRef, newRoom)
-//     console.log("just after push")
-//     window.location.replace(`game-waiting.html?game-id=${roomRef.key}`)
-// }
-// else if (urlParams.has("game-id")) {
-//     // this is a connection to an existing game
-//     const gameId = urlParams.get("game-id")
-//     console.log("connect to game " + gameId)
-//
-//     const roomRef = child(app.gameRoomsRef, gameId)
-//     get(roomRef).then((snapshot) => {
-//         if (snapshot.exists()) {
-//             const data = snapshot.val()
-//
-//             console.log(data)
-//
-//             const gameLink = document.getElementById("game-link")
-//             gameLink.textContent = window.location.href
-//         }
-//         else {
-//             window.location.replace("game-creation.html")
-//         }
-//     })
-// }
-// else {
-//     window.location.replace("game-creation.html")
-// }
+function playGame() {
+    // alert("play game");
+}
