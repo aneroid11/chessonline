@@ -1,5 +1,12 @@
 import {initializeApp} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
-import {getDatabase, ref, push, get, child} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
+import {
+    getDatabase,
+    ref,
+    push,
+    get,
+    child,
+    update, onValue
+} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
 import {getAuth} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js";
 
 const firebaseConfig = {
@@ -36,6 +43,10 @@ async function createGameRoom(time_limit, current_user_color) {
     return roomRef.key;
 }
 
+async function updateRoomData(roomKey, roomData) {
+    await update(ref(db, `/rooms/${roomKey}`), roomData);
+}
+
 async function getRoomData(roomKey) {
     try {
         const data = await get(child(gameRoomsRef, roomKey));
@@ -70,21 +81,20 @@ async function connectCurrUserToRoom(roomKey, roomData) {
 
     if (typeof roomData["white"] === "string") {
         roomData["black"] = user.uid;
-        return "can_play";
+    }
+    else {
+        roomData["white"] = user.uid;
     }
 
-    roomData["white"] = user.uid;
+    await updateRoomData(roomKey, roomData);
     return "can_play";
 }
 
-function checkCurrUserAccessToRoom(roomData) {
-    // check if current user can have access to the room.
-
-    const user = auth.currentUser;
-
-    if (typeof roomData["white"] === "string" && typeof roomData["black"] === "string") {
-        return !(user.uid !== roomData["white"] && user.uid !== roomData["black"]);
-    }
+function listenForRoomUpdates(roomKey, listenerFunc) {
+    onValue(gameRoomsRef, (snapshot) => {
+        const roomData = snapshot.val();
+        listenerFunc(roomData);
+    })
 }
 
-export {createGameRoom, getRoomData, connectCurrUserToRoom}
+export {createGameRoom, getRoomData, connectCurrUserToRoom, listenForRoomUpdates}

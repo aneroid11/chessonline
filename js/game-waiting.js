@@ -1,6 +1,10 @@
 import {userIsAuthenticated} from "./app.js";
 import {Chessboard, COLOR, FEN} from "https://cdn.jsdelivr.net/npm/cm-chessboard@7/src/cm-chessboard/Chessboard.js";
-import {getRoomData, connectCurrUserToRoom} from "./api/rooms.js";
+import {getRoomData, connectCurrUserToRoom, listenForRoomUpdates} from "./api/rooms.js";
+
+function playGame() {
+    alert("play game");
+}
 
 if (!userIsAuthenticated()) {
     window.location.href = "login.html"
@@ -31,6 +35,17 @@ if (roomData == null) {
 else {
     const connectResult = await connectCurrUserToRoom(gameId, roomData);
     alert(connectResult);
+
+    if (connectResult === "can_play") {
+        playGame();
+    }
+    else {
+        listenForRoomUpdates(gameId, (updatedRoomData) => {
+            if (typeof updatedRoomData["white"] === "string" && typeof updatedRoomData["black"] === "string") {
+                playGame();
+            }
+        });
+    }
 }
 
 // const queryString = window.location.search
