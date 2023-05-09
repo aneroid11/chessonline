@@ -39,13 +39,6 @@ else if (urlParams.has("game-id")) {
 
             console.log(data)
 
-            // if (data.get("secondPlayer") == null) {
-            //     data["secondPlayer"] = "Ahmed"
-            // }
-            // else {
-            //     window.location.replace("game-running.html")
-            // }
-
             const gameLink = document.getElementById("game-link")
             gameLink.textContent = window.location.href
         }
