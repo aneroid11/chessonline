@@ -89,7 +89,19 @@ async function getUserProfileInfo() {
         return {"name": response.val().name}
     }
     catch (error) {
-        alert(error)
+        console.log(error)
+        return null
+    }
+}
+
+async function getProfileInfoByUid(uid) {
+    try {
+        const response = await get(ref(db,"users/" + uid))
+        // alert(response.val().name);
+        return {"name": response.val().name}
+    }
+    catch (error) {
+        console.log(error)
         return null
     }
 }
@@ -109,5 +121,5 @@ async function changeUserPassword(uid, newPassword) {
 
 export {
     createUser, signOutUser, signInUser, reauthenticateUser, deleteCurrentUser,
-    changeUserName, changeUserPassword, getUserProfileInfo
+    changeUserName, changeUserPassword, getUserProfileInfo, getProfileInfoByUid
 }
