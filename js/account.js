@@ -13,6 +13,5 @@ async function logOut() {
 
 document.getElementById("log-out").addEventListener("click", logOut)
 
-getUserProfileInfo().then((profileInfo) => {
-    document.getElementById("account-name").textContent = profileInfo.name
-})
+const profileInfo = await getUserProfileInfo()
+document.getElementById("account-name").textContent = profileInfo.name
