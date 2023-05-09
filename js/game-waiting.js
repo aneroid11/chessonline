@@ -7,7 +7,6 @@ if (!userIsAuthenticated()) {
 
 const props = {
     position: FEN.start,
-    orientation: COLOR.black,
     style: {
         cssClass: "green"
     }
@@ -17,6 +16,12 @@ new Chessboard(document.getElementById("chess-board"), props);
 // const gameId = urlParams.get("game-id");
 const gameLink = document.getElementById("game-link")
 gameLink.textContent = window.location.href
+
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+const gameId = urlParams.get("game-id");
+
+alert("connect to game room: " + gameId);
 
 // const queryString = window.location.search
 // const urlParams = new URLSearchParams(queryString)
