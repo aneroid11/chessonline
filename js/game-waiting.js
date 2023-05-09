@@ -41,6 +41,8 @@ else {
     }
     else {
         listenForRoomUpdates(gameId, (updatedRoomData) => {
+            console.log(updatedRoomData["white"]);
+
             if (typeof updatedRoomData["white"] === "string" && typeof updatedRoomData["black"] === "string") {
                 playGame();
             }

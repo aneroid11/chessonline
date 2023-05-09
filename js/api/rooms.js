@@ -91,7 +91,7 @@ async function connectCurrUserToRoom(roomKey, roomData) {
 }
 
 function listenForRoomUpdates(roomKey, listenerFunc) {
-    onValue(gameRoomsRef, (snapshot) => {
+    onValue(child(gameRoomsRef, roomKey), (snapshot) => {
         const roomData = snapshot.val();
         listenerFunc(roomData);
     })
