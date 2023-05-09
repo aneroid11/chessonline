@@ -17,7 +17,7 @@ async function saveChanges(event) {
     const result = await reauthenticateUser(passwordInput.value)
     if (typeof result !== "string") {
         if (nameInput.value.length > 0 && profileInfo["name"] !== nameInput.value) {
-            changeUserName(result.uid, nameInput.value)
+            await changeUserName(result.uid, nameInput.value)
         }
         if (newPasswordInput.value.length > 0) {
             changeUserPassword(result.uid, newPasswordInput.value)

@@ -1,5 +1,5 @@
 import {initializeApp} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
-import {getDatabase, ref, set, remove, child, get} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
+import {getDatabase, ref, set, remove, update, child, get} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
 import {
     deleteUser, reauthenticateWithCredential, EmailAuthProvider,
     createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, getAuth,
@@ -99,8 +99,10 @@ async function getUserProfileInfo() {
     }
 }
 
-function changeUserName(uid, newName) {
-    alert("change user name to " + newName)
+async function changeUserName(uid, newName) {
+    console.log("change user name to " + newName)
+
+    await update(ref(db, `/users/${uid}`), {"name": newName});
 }
 
 function changeUserPassword(uid, newPassword) {
