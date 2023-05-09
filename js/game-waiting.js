@@ -38,7 +38,11 @@ async function updateGameField(roomData) {
     }
 }
 
-function playGame() {
+async function playGame() {
+    document.getElementById("game-link").style.display = "none";
+    document.getElementById("game-cancel-button").style.display = "none";
+    document.getElementById("game-draw-button").style.display = "inline-block";
+    document.getElementById("game-resign-button").style.display = "inline-block";
     // alert("play game");
 }
 
@@ -91,7 +95,7 @@ async function main() {
             if (typeof updatedRoomData["white"] === "string" && typeof updatedRoomData["black"] === "string") {
                 await updateUserNames(updatedRoomData);
                 await updateGameField(updatedRoomData);
-                playGame();
+                await playGame();
             }
         });
 
