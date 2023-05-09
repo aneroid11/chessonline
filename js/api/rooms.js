@@ -97,4 +97,8 @@ function listenForRoomUpdates(roomKey, listenerFunc) {
     })
 }
 
-export {createGameRoom, getRoomData, connectCurrUserToRoom, listenForRoomUpdates}
+function amIWhite(roomData) {
+    return roomData["white"] === auth.currentUser.uid;
+}
+
+export {createGameRoom, getRoomData, connectCurrUserToRoom, listenForRoomUpdates, amIWhite}

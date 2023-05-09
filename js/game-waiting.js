@@ -5,7 +5,8 @@ import {
     FEN,
     INPUT_EVENT_TYPE
 } from "https://cdn.jsdelivr.net/npm/cm-chessboard@7/src/cm-chessboard/Chessboard.js";
-import {getRoomData, connectCurrUserToRoom, listenForRoomUpdates} from "./api/rooms.js";
+import {getRoomData, connectCurrUserToRoom, listenForRoomUpdates, amIWhite} from "./api/rooms.js";
+import {getUserProfileInfo} from "./api/users.js";
 
 if (!userIsAuthenticated()) {
     window.location.href = "login.html"
@@ -17,9 +18,8 @@ const props = {
         cssClass: "green"
     }
 }
-// const chessboard = new Chessboard(document.getElementById("chess-board"), props);
-window.chessboard = new Chessboard(document.getElementById("chess-board"), props);
-window.chessboard.enableMoveInput((event) => {
+const chessboard = new Chessboard(document.getElementById("chess-board"), props);
+chessboard.enableMoveInput((event) => {
     switch (event.type) {
         case INPUT_EVENT_TYPE.moveInputStarted:
             // return `true`, if input is accepted/valid, `false` aborts the interaction, the piece will not move
@@ -32,9 +32,7 @@ window.chessboard.enableMoveInput((event) => {
             break;
     }
 });
-// await chessboard.movePiece("e2", "e4", true);
 
-// const gameId = urlParams.get("game-id");
 const gameLink = document.getElementById("game-link")
 gameLink.textContent = window.location.href
 
@@ -49,6 +47,8 @@ if (roomData == null) {
     window.location.replace("game-creation.html");
 }
 else {
+    await updateGameField();
+
     const connectResult = await connectCurrUserToRoom(gameId, roomData);
     // alert(connectResult);
 
@@ -57,12 +57,25 @@ else {
     }
     else {
         listenForRoomUpdates(gameId, (updatedRoomData) => {
-            console.log(updatedRoomData["white"]);
-
             if (typeof updatedRoomData["white"] === "string" && typeof updatedRoomData["black"] === "string") {
                 playGame();
             }
         });
+    }
+}
+
+async function updateGameField() {
+    if (amIWhite(roomData)) {
+        document.getElementById("game-waiting-bottom-name").textContent =
+            roomData["white"];
+        document.getElementById("game-waiting-top-name").textContent =
+            roomData["black"];
+    }
+    else {
+        document.getElementById("game-waiting-bottom-name").textContent =
+            roomData["black"];
+        document.getElementById("game-waiting-top-name").textContent =
+            roomData["white"];
     }
 }
 
