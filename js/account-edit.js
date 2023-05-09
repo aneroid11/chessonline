@@ -1,5 +1,5 @@
 import { userIsAuthenticated } from "./app.js";
-import { getUserProfileInfo } from "./api/users.js";
+import { getUserProfileInfo, reauthenticateUser, changeUserName, changeUserPassword } from "./api/users.js";
 
 if (!userIsAuthenticated()) {
     window.location.replace("login.html")
@@ -11,11 +11,24 @@ const nameInput = document.getElementById("acc-edit-name")
 const newPasswordInput = document.getElementById("acc-edit-new-password")
 const repeatPasswordInput = document.getElementById("acc-edit-repeat-password")
 
-function saveChanges(event) {
+async function saveChanges(event) {
     event.preventDefault()
 
-    alert("save changes")
-    window.location.replace("account.html")
+    const result = await reauthenticateUser(passwordInput.value)
+    if (typeof result !== "string") {
+        if (nameInput.value.length > 0 && profileInfo["name"] !== nameInput.value) {
+            changeUserName(result.uid, nameInput.value)
+        }
+        if (newPasswordInput.value.length > 0) {
+            changeUserPassword(result.uid, newPasswordInput.value)
+        }
+    }
+    else {
+        document.getElementById("acc-edit-form-error").textContent = result
+    }
+
+    // alert("save changes")
+    // window.location.replace("account.html")
 }
 
 function checkPasswordLength(event) {

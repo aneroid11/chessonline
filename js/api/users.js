@@ -31,7 +31,6 @@ const errors = {
 async function createUser(name, email, password) {
     try {
         const response = await createUserWithEmailAndPassword(auth, email, password)
-        //await set(usersRef + response.uid, { "name": name })
         await set(ref(db,"users/" + response.user.uid), {"name": name})
         return response.user
     }
@@ -53,6 +52,8 @@ async function signInUser(email, password) {
 }
 
 async function reauthenticateUser(password) {
+    while (auth.currentUser == null) {}
+    // alert(auth.currentUser.email)
     const creds = EmailAuthProvider.credential(auth.currentUser.email, password)
 
     try {
@@ -75,6 +76,9 @@ async function deleteCurrentUser() {
 }
 
 async function getUserProfileInfo() {
+    // while (auth.currentUser == null) {}
+    // alert(auth.currentUser.email)
+
     let userId = ""
 
     if (document.cookie.includes('user=')) {
@@ -95,7 +99,15 @@ async function getUserProfileInfo() {
     }
 }
 
+function changeUserName(uid, newName) {
+    alert("change user name to " + newName)
+}
+
+function changeUserPassword(uid, newPassword) {
+    alert("change user password to " + newPassword)
+}
+
 export {
     app, db, gameRoomsRef, createUser, signOutUser, signInUser, reauthenticateUser, deleteCurrentUser,
-    getUserProfileInfo
+    changeUserName, changeUserPassword, getUserProfileInfo
 }
