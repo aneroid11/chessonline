@@ -3,7 +3,7 @@ import {getDatabase, ref, set, remove, update, child, get} from "https://www.gst
 import {
     deleteUser, reauthenticateWithCredential, EmailAuthProvider,
     createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, getAuth,
-    onAuthStateChanged, updateProfile
+    onAuthStateChanged, updateProfile, updatePassword
 } from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js';
 
 const firebaseConfig = {
@@ -105,8 +105,12 @@ async function changeUserName(uid, newName) {
     await update(ref(db, `/users/${uid}`), {"name": newName});
 }
 
-function changeUserPassword(uid, newPassword) {
-    alert("change user password to " + newPassword)
+async function changeUserPassword(uid, newPassword) {
+    console.log("change user password to " + newPassword)
+
+    const user = auth.currentUser;
+    alert(user.email)
+    await updatePassword(user, newPassword)
 }
 
 export {
