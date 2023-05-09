@@ -86,6 +86,7 @@ async function connectCurrUserToRoom(roomKey, roomData) {
         roomData["white"] = user.uid;
     }
 
+    // alert("UPDATE ROOM DATA");
     await updateRoomData(roomKey, roomData);
     return "can_play";
 }
@@ -101,4 +102,4 @@ function amIWhite(roomData) {
     return roomData["white"] === auth.currentUser.uid;
 }
 
-export {createGameRoom, getRoomData, connectCurrUserToRoom, listenForRoomUpdates, amIWhite}
+export {createGameRoom, getRoomData, connectCurrUserToRoom, listenForRoomUpdates, amIWhite, updateRoomData}
