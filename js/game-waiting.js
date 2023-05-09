@@ -38,6 +38,7 @@ async function updateGameField() {
             userNames["black"];
         document.getElementById("game-waiting-top-name").textContent =
             userNames["white"];
+        await window.chessboard.setOrientation(COLOR.black, true);
     }
 }
 
@@ -56,8 +57,8 @@ async function main() {
             cssClass: "green"
         }
     }
-    const chessboard = new Chessboard(document.getElementById("chess-board"), props);
-    chessboard.enableMoveInput((event) => {
+    window.chessboard = new Chessboard(document.getElementById("chess-board"), props);
+    window.chessboard.enableMoveInput((event) => {
         switch (event.type) {
             case INPUT_EVENT_TYPE.moveInputStarted:
                 // return `true`, if input is accepted/valid, `false` aborts the interaction, the piece will not move
