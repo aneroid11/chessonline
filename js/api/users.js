@@ -1,5 +1,5 @@
 import {initializeApp} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
-import {getDatabase, ref, set, remove, child} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
+import {getDatabase, ref, set, remove, child, onChildAdded, onChildRemoved} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
 import {
     deleteUser, reauthenticateWithCredential, EmailAuthProvider,
     createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, getAuth,
@@ -74,4 +74,11 @@ async function deleteCurrentUser() {
     await deleteUser(auth.currentUser)
 }
 
-export { app, db, gameRoomsRef, createUser, signOutUser, signInUser, reauthenticateUser, deleteCurrentUser }
+async function getUserProfileInfo() {
+
+}
+
+export {
+    app, db, gameRoomsRef, createUser, signOutUser, signInUser, reauthenticateUser, deleteCurrentUser,
+    getUserProfileInfo
+}
