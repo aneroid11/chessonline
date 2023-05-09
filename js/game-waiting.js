@@ -1,5 +1,6 @@
 import {userIsAuthenticated} from "./app.js";
 import {Chessboard, COLOR, FEN} from "https://cdn.jsdelivr.net/npm/cm-chessboard@7/src/cm-chessboard/Chessboard.js";
+import {getRoomData, connectCurrUserToRoom} from "./api/rooms.js";
 
 if (!userIsAuthenticated()) {
     window.location.href = "login.html"
@@ -21,7 +22,16 @@ const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const gameId = urlParams.get("game-id");
 
-alert("connect to game room: " + gameId);
+console.log("connect to game room: " + gameId);
+
+const roomData = await getRoomData(gameId);
+if (roomData == null) {
+    window.location.replace("game-creation.html");
+}
+else {
+    const connectResult = await connectCurrUserToRoom(gameId, roomData);
+    alert(connectResult);
+}
 
 // const queryString = window.location.search
 // const urlParams = new URLSearchParams(queryString)

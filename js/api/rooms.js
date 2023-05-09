@@ -1,5 +1,5 @@
 import {initializeApp} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
-import {getDatabase, ref, push} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
+import {getDatabase, ref, push, get, child} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
 import {getAuth} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js";
 
 const firebaseConfig = {
@@ -36,4 +36,55 @@ async function createGameRoom(time_limit, current_user_color) {
     return roomRef.key;
 }
 
-export {createGameRoom}
+async function getRoomData(roomKey) {
+    try {
+        const data = await get(child(gameRoomsRef, roomKey));
+        return data.val();
+    }
+    catch (error) {
+        return null;
+    }
+}
+
+async function connectCurrUserToRoom(roomKey, roomData) {
+    // returns "wait_one", "cannot_connect" or "can_play".
+    // suppose roomKey is valid.
+
+    const user = auth.currentUser;
+
+    if (typeof roomData["white"] === "string" && typeof roomData["black"] === "string") {
+        if (user.uid !== roomData["white"] && user.uid !== roomData["black"]) {
+            return "cannot_connect";
+        }
+        return "can_play";
+    }
+
+    // one is undefined
+
+    if (
+        typeof roomData["white"] === "string" && user.uid === roomData["white"] ||
+        typeof roomData["black"] === "string" && user.uid === roomData["black"]
+    ) {
+        return "wait_one";
+    }
+
+    if (typeof roomData["white"] === "string") {
+        roomData["black"] = user.uid;
+        return "can_play";
+    }
+
+    roomData["white"] = user.uid;
+    return "can_play";
+}
+
+function checkCurrUserAccessToRoom(roomData) {
+    // check if current user can have access to the room.
+
+    const user = auth.currentUser;
+
+    if (typeof roomData["white"] === "string" && typeof roomData["black"] === "string") {
+        return !(user.uid !== roomData["white"] && user.uid !== roomData["black"]);
+    }
+}
+
+export {createGameRoom, getRoomData, connectCurrUserToRoom}
