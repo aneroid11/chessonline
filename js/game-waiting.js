@@ -1,10 +1,18 @@
-// import {push, child, get} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
-// import * as app from "./app.js"
-import { userIsAuthenticated } from "./app.js";
+import {userIsAuthenticated} from "./app.js";
+import {Chessboard, COLOR, FEN} from "https://cdn.jsdelivr.net/npm/cm-chessboard@7/src/cm-chessboard/Chessboard.js";
 
 if (!userIsAuthenticated()) {
     window.location.href = "login.html"
 }
+
+const props = {
+    position: FEN.start,
+    orientation: COLOR.black,
+    style: {
+        cssClass: "green"
+    }
+}
+new Chessboard(document.getElementById("chess-board"), props);
 
 // const gameId = urlParams.get("game-id");
 const gameLink = document.getElementById("game-link")
