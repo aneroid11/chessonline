@@ -76,9 +76,6 @@ async function deleteCurrentUser() {
 }
 
 async function getUserProfileInfo() {
-    // while (auth.currentUser == null) {}
-    // alert(auth.currentUser.email)
-
     let userId = ""
 
     if (document.cookie.includes('user=')) {
@@ -109,7 +106,6 @@ async function changeUserPassword(uid, newPassword) {
     console.log("change user password to " + newPassword)
 
     const user = auth.currentUser;
-    alert(user.email)
     await updatePassword(user, newPassword)
 }
 
