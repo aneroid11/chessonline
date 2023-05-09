@@ -2,8 +2,7 @@ import {initializeApp} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-
 import {getDatabase, ref, set, remove, update, child, get} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
 import {
     deleteUser, reauthenticateWithCredential, EmailAuthProvider,
-    createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, getAuth,
-    onAuthStateChanged, updateProfile, updatePassword
+    createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, getAuth, updatePassword
 } from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js';
 
 const firebaseConfig = {
@@ -17,7 +16,6 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig)
 const db = getDatabase(app)
-const gameRoomsRef = ref(db, '/rooms')
 const usersRef = ref(db, "/users")
 const auth = getAuth()
 
@@ -110,6 +108,6 @@ async function changeUserPassword(uid, newPassword) {
 }
 
 export {
-    app, db, gameRoomsRef, createUser, signOutUser, signInUser, reauthenticateUser, deleteCurrentUser,
+    createUser, signOutUser, signInUser, reauthenticateUser, deleteCurrentUser,
     changeUserName, changeUserPassword, getUserProfileInfo
 }
