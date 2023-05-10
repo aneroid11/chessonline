@@ -102,7 +102,8 @@ function listenForRoomUpdates(roomKey, listenerFunc) {
 }
 
 function amIWhite(roomData) {
-    return roomData["white"] === auth.currentUser.uid;
+    return roomData["white"] === auth.currentUser.uid ||
+        (roomData["black"] !== auth.currentUser.uid && roomData["white"] == null);
 }
 
 export {createGameRoom, getRoomData, connectCurrUserToRoom, listenForRoomUpdates, amIWhite, updateRoomData}

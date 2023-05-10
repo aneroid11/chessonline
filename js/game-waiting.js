@@ -68,6 +68,8 @@ function showGameResult(result) {
         msg = "Draw!";
     }
 
+    document.getElementById("game-waiting-top-time-left").textContent = "--:--"
+    document.getElementById("game-waiting-bottom-time-left").textContent = "--:--"
     document.getElementById("game-message").textContent = msg;
     document.getElementById("game-message").style.display = "block";
     document.getElementById("game-draw-button").style.display = "none";
@@ -263,6 +265,15 @@ async function main() {
     }
     else {
         iAmWhite = amIWhite(roomData);
+
+        document.getElementById("game-resign-button").addEventListener(
+            "click", (event) => {
+                event.preventDefault();
+
+                const winnerColor = iAmWhite ? "black" : "white";
+                finishGame(winnerColor);
+            }
+        )
 
         listenForRoomUpdates(gameId, async (updatedRoomData) => {
             if (
