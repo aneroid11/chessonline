@@ -60,6 +60,7 @@ async function setupGame(chessGame) {
                 const result = chessGame.move({"from": event.squareFrom, "to": event.squareTo, "promotion": "q"});
                 if (result) {
                     updateBoard = false;
+                    event.chessboard.setPosition(chessGame.fen());
                     updateRoomData(gameId, {"moves": chessGame.pgn()});
                     return true;
                 }
