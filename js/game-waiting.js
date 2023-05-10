@@ -9,13 +9,9 @@ import {Chess} from "https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.13.4/ches
 import {getRoomData, connectCurrUserToRoom, updateRoomData, listenForRoomUpdates, amIWhite} from "./api/rooms.js";
 import {getProfileInfoByUid} from "./api/users.js";
 
-const chess =
-    new Chess();
-
 let gameId = null;
 let roomData = {};
 const userNames = {};
-let chessGame = null;
 
 async function updateUserNames(roomData) {
     if (typeof roomData["white"] === "string") {
@@ -44,7 +40,7 @@ async function updateGameField(roomData) {
     }
 }
 
-async function startGame() {
+async function startGame(chessGame) {
     document.getElementById("game-link").style.display = "none";
     document.getElementById("game-cancel-button").style.display = "none";
     document.getElementById("game-draw-button").style.display = "inline-block";
@@ -59,7 +55,15 @@ async function startGame() {
             case INPUT_EVENT_TYPE.validateMoveInput:
                 // return true, if input is accepted/valid, `false` takes the move back
                 // updateRoomData(gameId, {"position": window.chessboard.getPosition()});
-                return true
+                // try {
+                //     chessGame.move({"from": event.squareFrom, "to": event.squareTo});
+                //     updateRoomData(gameId, {"position": chessGame.fen()});
+                // }
+                // catch (error) {
+                //     return false;
+                // }
+
+                return true;
             case INPUT_EVENT_TYPE.moveInputCanceled:
                 // console.log(`moveInputCanceled`)
                 break;
@@ -68,6 +72,15 @@ async function startGame() {
 }
 
 async function main() {
+    const chessGame
+        = new Chess();
+    chessGame.move({"from": "e2", "to": "e4"});
+    chessGame.move({"from": "e7", "to": "e5"});
+    chessGame.move({"from": "g1", "to": "f3"});
+    chessGame.move({"from": "b8", "to": "c6"});
+    alert(chessGame.pgn());
+    alert(chessGame.ascii());
+
     if (!userIsAuthenticated()) {
         window.location.href = "login.html"
     }
@@ -107,9 +120,10 @@ async function main() {
                 if (roomData["position"] === updatedRoomData["position"]) {
                     await updateUserNames(updatedRoomData);
                     await updateGameField(updatedRoomData);
-                    await window.chessboard.setPosition(updatedRoomData["position"], true);
+                    await window.chessboard.setPosition(chessGame.fen(), true);
+                    // await window.chessboard.setPosition(updatedRoomData["position"], true);
                     // chessGame.setPosition()
-                    await startGame();
+                    await startGame(chessGame);
                 }
                 else {
                     // update only position
