@@ -81,6 +81,7 @@ async function main() {
     const chessGame
         = new Chess();
 
+    
     if (!userIsAuthenticated()) {
         window.location.href = "login.html"
     }
