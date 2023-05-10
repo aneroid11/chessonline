@@ -29,7 +29,7 @@ async function updateUserNames(roomData) {
 }
 
 async function updateGameField(roomData) {
-    if (iAmWhite) {
+    if (amIWhite(roomData)) {
         document.getElementById("game-waiting-bottom-name").textContent =
             userNames["white"];
         document.getElementById("game-waiting-top-name").textContent =
@@ -95,7 +95,7 @@ async function setupGame(chessGame) {
                 // console.log(`moveInputCanceled`)
                 break;
         }
-    }, iAmWhite ? COLOR.white : COLOR.black);
+    }, amIWhite(roomData) ? COLOR.white : COLOR.black);
 
     if (roomData["game-start"] === undefined) {
         // start the game
@@ -277,7 +277,8 @@ async function main() {
                     await updateUserNames(updatedRoomData);
                     await updateGameField(updatedRoomData);
                     chessGame.load_pgn(roomData["moves"]);
-                    await window.chessboard.setPosition(chessGame.fen(), true);
+                    // await window.chessboard.setPosition(chessGame.fen(), true);
+                    await window.chessboard.setPosition(chessGame.fen());
                     await setupGame(chessGame);
                 }
                 else {
