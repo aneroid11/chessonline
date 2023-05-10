@@ -55,7 +55,9 @@ async function setupGame(chessGame) {
                 return true
             case INPUT_EVENT_TYPE.validateMoveInput:
                 // return true, if input is accepted/valid, `false` takes the move back
-                const result = chessGame.move({"from": event.squareFrom, "to": event.squareTo});
+
+                // by default, pawns are promoted to Queens.
+                const result = chessGame.move({"from": event.squareFrom, "to": event.squareTo, "promotion": "q"});
                 if (result) {
                     updateBoard = false;
                     updateRoomData(gameId, {"moves": chessGame.pgn()});
@@ -73,13 +75,6 @@ async function setupGame(chessGame) {
 async function main() {
     const chessGame
         = new Chess();
-    //     = new Chess();
-    // chessGame.move({"from": "e2", "to": "e4"});
-    // chessGame.move({"from": "e7", "to": "e5"});
-    // chessGame.move({"from": "g1", "to": "f3"});
-    // chessGame.move({"from": "b8", "to": "c6"});
-    // alert(chessGame.pgn());
-    // alert(chessGame.ascii());
 
     if (!userIsAuthenticated()) {
         window.location.href = "login.html"
@@ -122,8 +117,6 @@ async function main() {
                     await updateGameField(updatedRoomData);
                     chessGame.load_pgn(roomData["moves"]);
                     await window.chessboard.setPosition(chessGame.fen(), true);
-                    // await window.chessboard.setPosition(updatedRoomData["position"], true);
-                    // chessGame.setPosition()
                     await setupGame(chessGame);
                 }
                 else {
