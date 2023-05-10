@@ -48,9 +48,7 @@ async function updateGameField(roomData) {
 async function finishGame(result) {
     await updateRoomData(gameId, {
         "result": result
-    })
-    gameFinished = true;
-    // alert(result);
+    });
 }
 
 function showGameResult(result) {
@@ -200,6 +198,7 @@ function timerFunc(chessGame, roomData) {
     if (gameFinished) {
         return;
     }
+    console.log(gameFinished);
 
     const myColor = amIWhite(roomData) ? "w" : "b";
 
@@ -255,6 +254,7 @@ async function main() {
                 typeof updatedRoomData["black"] === "string"
             ) {
                 if (updatedRoomData["result"] !== undefined) {
+                    gameFinished = true;
                     showGameResult(updatedRoomData["result"]);
                 }
                 else {
