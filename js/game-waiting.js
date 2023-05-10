@@ -16,6 +16,7 @@ let updateBoard = true;
 let iAmWhite = null;
 let timeLeftTop = 0;
 let timeLeftBottom = 0;
+let gameFinished = false;
 
 async function updateUserNames(roomData) {
     if (typeof roomData["white"] === "string") {
@@ -48,13 +49,15 @@ async function finishGame(result) {
     await updateRoomData(gameId, {
         "result": result
     })
+    gameFinished = true;
     // alert(result);
 }
 
 function showGameResult(result) {
     clearInterval(timer);
 
-    alert(result);
+    console.log("clear interval");
+    console.log(result + " won");
 }
 
 async function setupGame(chessGame) {
@@ -182,6 +185,10 @@ function updateTimeLeft(updatedRoomData, chessGame) {
 
 let timer = null;
 function recreateTimer(chessGame, roomData) {
+    console.log(roomData["result"]);
+
+    // alert("recreate timer");
+
     if (timer !== null) {
         clearInterval(timer);
     }
@@ -190,6 +197,10 @@ function recreateTimer(chessGame, roomData) {
 }
 
 function timerFunc(chessGame, roomData) {
+    if (gameFinished) {
+        return;
+    }
+
     const myColor = amIWhite(roomData) ? "w" : "b";
 
     showTimeLeft();
@@ -247,6 +258,8 @@ async function main() {
                     showGameResult(updatedRoomData["result"]);
                 }
                 else {
+                    console.log("new update");
+
                     if (roomData["moves"] === updatedRoomData["moves"]) {
                         // update everything, it was a page refresh.
 
