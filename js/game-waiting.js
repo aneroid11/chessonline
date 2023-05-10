@@ -56,7 +56,7 @@ async function setupGame(chessGame) {
             case INPUT_EVENT_TYPE.validateMoveInput:
                 // return true, if input is accepted/valid, `false` takes the move back
 
-                // by default, pawns are promoted to Queens.
+                // pawns are promoted to Queens only.
                 const result = chessGame.move({"from": event.squareFrom, "to": event.squareTo, "promotion": "q"});
                 if (result) {
                     updateBoard = false;
