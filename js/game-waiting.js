@@ -29,8 +29,6 @@ async function updateUserNames(roomData) {
 }
 
 async function updateGameField(roomData) {
-    iAmWhite = amIWhite(roomData);
-
     if (iAmWhite) {
         document.getElementById("game-waiting-bottom-name").textContent =
             userNames["white"];
@@ -116,6 +114,23 @@ function convertSecondsToMinutesSeconds(seconds) {
     return `${Math.floor(seconds / 60)}:${Math.floor(seconds % 60)}`;
 }
 
+function updateTimeLeft(roomData) {
+    alert("update time left");
+
+    if (iAmWhite) {
+        document.getElementById("game-waiting-top-time-left").textContent =
+            convertSecondsToMinutesSeconds(roomData["time-left-black"]);
+        document.getElementById("game-waiting-bottom-time-left").textContent =
+            convertSecondsToMinutesSeconds(roomData["time-left-white"]);
+    }
+    else {
+        document.getElementById("game-waiting-bottom-time-left").textContent =
+            convertSecondsToMinutesSeconds(roomData["time-left-black"]);
+        document.getElementById("game-waiting-top-time-left").textContent =
+            convertSecondsToMinutesSeconds(roomData["time-left-white"]);
+    }
+}
+
 function startTimer(startCount, chessGame) {
     timeLeftTop = startCount;
     timeLeftBottom = startCount;
@@ -173,6 +188,7 @@ async function main() {
         window.location.replace("game-creation.html");
     }
     else {
+        iAmWhite = amIWhite(roomData);
         // document.getElementById("game-waiting-top-time-left").textContent =
         //     roomData["time-limit"];
         // document.getElementById("game-waiting-bottom-time-left").textContent =
@@ -213,6 +229,10 @@ async function main() {
                 // }
 
                 if (roomData["moves"] === updatedRoomData["moves"]) {
+                    // update everything, it was a page refresh.
+
+                    updateTimeLeft(updatedRoomData);
+
                     await updateUserNames(updatedRoomData);
                     await updateGameField(updatedRoomData);
                     chessGame.load_pgn(roomData["moves"]);
@@ -220,7 +240,10 @@ async function main() {
                     await setupGame(chessGame);
                 }
                 else {
-                    // update only position
+                    // update only position and time left
+
+                    updateTimeLeft(updatedRoomData);
+
                     if (updateBoard) {
                         // it was not our move.
 
