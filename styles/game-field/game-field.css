@@ -9,3 +9,7 @@
 .game-field, a {
     margin-top: 10px;
 }
+
+.game-field, h1 {
+    color: white;
+}

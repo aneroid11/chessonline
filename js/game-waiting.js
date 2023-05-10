@@ -54,8 +54,24 @@ async function finishGame(result) {
 function showGameResult(result) {
     clearInterval(timer);
 
-    console.log("clear interval");
     console.log(result + " won");
+
+    let msg = "";
+
+    if (result === "black") {
+        msg = "Black won!";
+    }
+    else if (result === "white") {
+        msg = "White won!";
+    }
+    else {
+        msg = "Draw!";
+    }
+
+    document.getElementById("game-message").textContent = msg;
+    document.getElementById("game-message").style.display = "block";
+    document.getElementById("game-draw-button").style.display = "none";
+    document.getElementById("game-resign-button").style.display = "none";
 }
 
 async function setupGame(chessGame) {
@@ -253,15 +269,10 @@ async function main() {
                 typeof updatedRoomData["white"] === "string" &&
                 typeof updatedRoomData["black"] === "string"
             ) {
-                if (updatedRoomData["result"] !== undefined) {
-                    gameFinished = true;
-                    showGameResult(updatedRoomData["result"]);
-                }
-                else {
-                    console.log("new update");
-
+                console.log("new update");
+                // else {
                     if (roomData["moves"] === updatedRoomData["moves"]) {
-                        // update everything, it was a page refresh.
+                        // update everything
 
                         await updateUserNames(updatedRoomData);
                         await updateGameField(updatedRoomData);
@@ -288,6 +299,11 @@ async function main() {
                         // await window.chessboard.setPosition(updatedRoomData["position"], true);
                     }
                     roomData = updatedRoomData;
+                // }
+
+                if (updatedRoomData["result"] !== undefined) {
+                    gameFinished = true;
+                    showGameResult(updatedRoomData["result"]);
                 }
             }
         });
