@@ -44,6 +44,13 @@ async function updateGameField(roomData) {
     }
 }
 
+async function finishGame(result) {
+    await updateRoomData(gameId, {
+        "result": result
+    })
+    alert(result);
+}
+
 async function setupGame(chessGame) {
     document.getElementById("game-link").style.display = "none";
     document.getElementById("game-cancel-button").style.display = "none";
@@ -87,6 +94,22 @@ async function setupGame(chessGame) {
                             "time-left-black": newTimeLeftBlack
                         }
                     );
+
+                    if (chessGame.game_over()) {
+                        if (chessGame.in_draw() || chessGame.in_stalemate() || chessGame.in_threefold_repetition()) {
+                            finishGame("draw");
+                        }
+                        else {
+                            if (chessGame.turn() === "w") {
+                                finishGame("black");
+                            }
+                            else {
+                                finishGame("white");
+                            }
+                        }
+
+                    }
+
                     return true;
                 }
 
@@ -106,41 +129,43 @@ async function setupGame(chessGame) {
             "time-left-black": roomData["time-limit"] * 60
         });
     }
-
-    // startTimer(roomData["time-limit"] * 60, chessGame);
 }
 
 function convertSecondsToMinutesSeconds(seconds) {
     return `${Math.floor(seconds / 60)}:${Math.floor(seconds % 60)}`;
 }
 
+function showTimeLeft() {
+    document.getElementById("game-waiting-top-time-left").textContent =
+        convertSecondsToMinutesSeconds(timeLeftTop);
+    document.getElementById("game-waiting-bottom-time-left").textContent =
+        convertSecondsToMinutesSeconds(timeLeftBottom);
+}
+
 function updateTimeLeft(updatedRoomData, chessGame) {
-    // alert("update time left");
     const timeFromLastMove = Math.floor(Date.now() / 1000) - updatedRoomData["last-move"];
     const myColor = amIWhite(updatedRoomData) ? "w" : "b";
+    alert(myColor);
 
     if (myColor === "w") {
         timeLeftTop = updatedRoomData["time-left-black"];
         timeLeftBottom = updatedRoomData["time-left-white"];
-        document.getElementById("game-waiting-top-time-left").textContent =
-            convertSecondsToMinutesSeconds(updatedRoomData["time-left-black"]);
-        document.getElementById("game-waiting-bottom-time-left").textContent =
-            convertSecondsToMinutesSeconds(updatedRoomData["time-left-white"]);
     }
     else {
         timeLeftTop = updatedRoomData["time-left-white"];
         timeLeftBottom = updatedRoomData["time-left-black"];
-        document.getElementById("game-waiting-bottom-time-left").textContent =
-            convertSecondsToMinutesSeconds(updatedRoomData["time-left-black"]);
-        document.getElementById("game-waiting-top-time-left").textContent =
-            convertSecondsToMinutesSeconds(updatedRoomData["time-left-white"]);
     }
+
+    alert(chessGame.turn());
+
     if (chessGame.turn() === myColor) {
         timeLeftBottom -= timeFromLastMove;
     }
     else {
         timeLeftTop -= timeFromLastMove;
     }
+
+    showTimeLeft();
 
     recreateTimer(chessGame, updatedRoomData);
 }
@@ -157,47 +182,18 @@ function recreateTimer(chessGame, roomData) {
 function timerFunc(chessGame, roomData) {
     const myColor = amIWhite(roomData) ? "w" : "b";
 
+    showTimeLeft();
+
     if (chessGame.turn() === myColor) {
-        document.getElementById("game-waiting-bottom-time-left").textContent =
-            convertSecondsToMinutesSeconds(timeLeftBottom);
         if (timeLeftBottom > 0) {
             timeLeftBottom--;
         }
     }
     else {
-        document.getElementById("game-waiting-top-time-left").textContent =
-            convertSecondsToMinutesSeconds(timeLeftTop);
         if (timeLeftTop > 0) {
             timeLeftTop--;
         }
     }
-}
-
-function startTimer(startCount, chessGame) {
-    timeLeftTop = startCount;
-    timeLeftBottom = startCount;
-
-    setInterval(
-        () => {
-            document.getElementById("game-waiting-bottom-time-left").textContent =
-                convertSecondsToMinutesSeconds(timeLeftBottom);
-            document.getElementById("game-waiting-top-time-left").textContent =
-                convertSecondsToMinutesSeconds(timeLeftTop);
-
-            const myColor = amIWhite(roomData) ? "w" : "b";
-            if (chessGame.turn() === myColor) {
-                if (timeLeftBottom > 0) {
-                    timeLeftBottom--;
-                }
-            }
-            else {
-                if (timeLeftTop > 0) {
-                    timeLeftTop--;
-                }
-            }
-        },
-        1000
-    )
 }
 
 async function main() {
@@ -231,61 +227,25 @@ async function main() {
     }
     else {
         iAmWhite = amIWhite(roomData);
-        // document.getElementById("game-waiting-top-time-left").textContent =
-        //     roomData["time-limit"];
-        // document.getElementById("game-waiting-bottom-time-left").textContent =
-        //     roomData["time-limit"];
 
         listenForRoomUpdates(gameId, async (updatedRoomData) => {
             if (
                 typeof updatedRoomData["white"] === "string" &&
                 typeof updatedRoomData["black"] === "string"
             ) {
-                // if (updatedRoomData["game-start"] !== undefined) {
-                //     // game already started, update the timers
-                //     iAmWhite = amIWhite(roomData);
-                //     timeLeftTop = iAmWhite ? updatedRoomData["time-left-black"] : updatedRoomData["time-left-white"];
-                //     timeLeftBottom = iAmWhite ? updatedRoomData["time-left-white"] : updatedRoomData["time-left-black"];
-                //
-                //     // timeLeft -= currTime - lastMoveTime;
-                //     const myColor = iAmWhite ? "w" : "b";
-                //
-                //     alert(myColor);
-                //
-                //     if (chessGame.turn() === myColor) {
-                //         // alert(Date.now());
-                //         // alert(updatedRoomData["last-move"]);
-                //         alert(Date.now() - updatedRoomData["last-move"]);
-                //         timeLeftBottom -= Date.now() - updatedRoomData["last-move"];
-                //     }
-                //     else {
-                //         alert(Date.now());
-                //         alert(updatedRoomData["last-move"]);
-                //         timeLeftTop -= Date.now() - updatedRoomData["last-move"];
-                //     }
-                //
-                //     document.getElementById("game-waiting-top-time-left").textContent =
-                //         convertSecondsToMinutesSeconds(timeLeftTop);
-                //     document.getElementById("game-waiting-bottom-time-left").textContent =
-                //         convertSecondsToMinutesSeconds(timeLeftBottom);
-                // }
-
                 if (roomData["moves"] === updatedRoomData["moves"]) {
                     // update everything, it was a page refresh.
-
-                    updateTimeLeft(updatedRoomData, chessGame);
 
                     await updateUserNames(updatedRoomData);
                     await updateGameField(updatedRoomData);
                     chessGame.load_pgn(roomData["moves"]);
+                    updateTimeLeft(updatedRoomData, chessGame);
                     // await window.chessboard.setPosition(chessGame.fen(), true);
                     await window.chessboard.setPosition(chessGame.fen());
                     await setupGame(chessGame);
                 }
                 else {
                     // update only position and time left
-
-                    updateTimeLeft(updatedRoomData, chessGame);
 
                     if (updateBoard) {
                         // it was not our move.
@@ -296,6 +256,8 @@ async function main() {
                     else {
                         updateBoard = true;
                     }
+
+                    updateTimeLeft(updatedRoomData, chessGame);
                     // await window.chessboard.setPosition(updatedRoomData["position"], true);
                 }
                 roomData = updatedRoomData;
