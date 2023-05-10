@@ -255,7 +255,7 @@ async function main() {
                         chessGame.load_pgn(roomData["moves"]);
                         updateTimeLeft(updatedRoomData, chessGame);
                         // await window.chessboard.setPosition(chessGame.fen(), true);
-                        await window.chessboard.setPosition(chessGame.fen());
+                        await window.chessboard.setPosition(chessGame.fen(), true);
                         await setupGame(chessGame);
                     }
                     else {
@@ -265,8 +265,9 @@ async function main() {
                             // it was not our move.
 
                             chessGame.load_pgn(updatedRoomData["moves"]);
-                            updateTimeLeft(updatedRoomData, chessGame);
                             await window.chessboard.setPosition(chessGame.fen(), true);
+                            // await window.chessboard.setPosition(chessGame.fen());
+                            updateTimeLeft(updatedRoomData, chessGame);
                         }
                         else {
                             updateBoard = true;
