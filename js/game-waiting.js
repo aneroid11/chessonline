@@ -116,6 +116,7 @@ function convertSecondsToMinutesSeconds(seconds) {
 
 function updateTimeLeft(updatedRoomData, chessGame) {
     // alert("update time left");
+    const timeFromLastMove = Math.floor(Date.now() / 1000) - updatedRoomData["last-move"];
 
     if (iAmWhite) {
         timeLeftTop = updatedRoomData["time-left-black"];
@@ -132,6 +133,12 @@ function updateTimeLeft(updatedRoomData, chessGame) {
             convertSecondsToMinutesSeconds(updatedRoomData["time-left-black"]);
         document.getElementById("game-waiting-top-time-left").textContent =
             convertSecondsToMinutesSeconds(updatedRoomData["time-left-white"]);
+    }
+    if (chessGame.turn() === "w") {
+        timeLeftBottom -= timeFromLastMove;
+    }
+    else {
+        timeLeftTop -= timeFromLastMove;
     }
 
     recreateTimer(chessGame);
