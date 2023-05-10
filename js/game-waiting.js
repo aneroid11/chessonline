@@ -13,6 +13,7 @@ let gameId = null;
 let roomData = {};
 const userNames = {};
 let updateBoard = true;
+let iAmWhite = null;
 
 async function updateUserNames(roomData) {
     if (typeof roomData["white"] === "string") {
@@ -26,7 +27,9 @@ async function updateUserNames(roomData) {
 }
 
 async function updateGameField(roomData) {
-    if (amIWhite(roomData)) {
+    iAmWhite = amIWhite(roomData);
+
+    if (iAmWhite) {
         document.getElementById("game-waiting-bottom-name").textContent =
             userNames["white"];
         document.getElementById("game-waiting-top-name").textContent =
@@ -69,28 +72,42 @@ async function setupGame(chessGame) {
                 // console.log(`moveInputCanceled`)
                 break;
         }
-    }, amIWhite(roomData) ? COLOR.white : COLOR.black);
+    }, iAmWhite ? COLOR.white : COLOR.black);
 
     if (roomData["game-start"] === undefined) {
         // start the game
         await updateRoomData(gameId, {"game-start": Date.now()});
     }
+
+    startTimer(roomData["time-limit"] * 60, chessGame);
 }
 
 function convertSecondsToMinutesSeconds(seconds) {
     return `${Math.floor(seconds / 60)}:${Math.floor(seconds % 60)}`;
 }
 
-function startTimer(startCount) {
-    let currCount = startCount;
+function startTimer(startCount, chessGame) {
+    // let currCount = startCount;
+    let currBottomCount = startCount;
+    let currTopCount = startCount;
 
     setInterval(
         () => {
             document.getElementById("game-waiting-bottom-time-left").textContent =
-                convertSecondsToMinutesSeconds(currCount);
+                convertSecondsToMinutesSeconds(currBottomCount);
+            document.getElementById("game-waiting-top-time-left").textContent =
+                convertSecondsToMinutesSeconds(currTopCount);
 
-            if (currCount > 0) {
-                currCount--;
+            const myColor = iAmWhite ? "w" : "b";
+            if (chessGame.turn() === myColor) {
+                if (currBottomCount > 0) {
+                    currBottomCount--;
+                }
+            }
+            else {
+                if (currTopCount > 0) {
+                    currTopCount--;
+                }
             }
         },
         1000
@@ -100,8 +117,6 @@ function startTimer(startCount) {
 async function main() {
     const chessGame
         = new Chess();
-
-    startTimer(30);
 
     if (!userIsAuthenticated()) {
         window.location.href = "login.html"
@@ -129,10 +144,10 @@ async function main() {
         window.location.replace("game-creation.html");
     }
     else {
-        document.getElementById("game-waiting-top-time-left").textContent =
-            roomData["time-limit"];
-        document.getElementById("game-waiting-bottom-time-left").textContent =
-            roomData["time-limit"];
+        // document.getElementById("game-waiting-top-time-left").textContent =
+        //     roomData["time-limit"];
+        // document.getElementById("game-waiting-bottom-time-left").textContent =
+        //     roomData["time-limit"];
 
         listenForRoomUpdates(gameId, async (updatedRoomData) => {
             if (
