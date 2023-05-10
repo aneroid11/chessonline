@@ -5,12 +5,17 @@ import {
     FEN,
     INPUT_EVENT_TYPE
 } from "https://cdn.jsdelivr.net/npm/cm-chessboard@7/src/cm-chessboard/Chessboard.js";
+import {Chess} from "https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.13.4/chess.js";
 import {getRoomData, connectCurrUserToRoom, updateRoomData, listenForRoomUpdates, amIWhite} from "./api/rooms.js";
 import {getProfileInfoByUid} from "./api/users.js";
+
+const chess =
+    new Chess();
 
 let gameId = null;
 let roomData = {};
 const userNames = {};
+let chessGame = null;
 
 async function updateUserNames(roomData) {
     if (typeof roomData["white"] === "string") {
@@ -102,11 +107,13 @@ async function main() {
                 if (roomData["position"] === updatedRoomData["position"]) {
                     await updateUserNames(updatedRoomData);
                     await updateGameField(updatedRoomData);
-                    await startGame();
                     await window.chessboard.setPosition(updatedRoomData["position"], true);
+                    // chessGame.setPosition()
+                    await startGame();
                 }
                 else {
                     // update only position
+                    // chessGame = Chess(window.chessboard.getPosition());
                     await window.chessboard.setPosition(updatedRoomData["position"], true);
                 }
                 roomData = updatedRoomData;
