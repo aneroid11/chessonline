@@ -48,6 +48,12 @@ async function finishGame(result) {
     await updateRoomData(gameId, {
         "result": result
     })
+    // alert(result);
+}
+
+function showGameResult(result) {
+    clearInterval(timer);
+
     alert(result);
 }
 
@@ -143,9 +149,13 @@ function showTimeLeft() {
 }
 
 function updateTimeLeft(updatedRoomData, chessGame) {
+    if (updatedRoomData["game-start"] === undefined) {
+        return;
+    }
+
     const timeFromLastMove = Math.floor(Date.now() / 1000) - updatedRoomData["last-move"];
     const myColor = amIWhite(updatedRoomData) ? "w" : "b";
-    alert(myColor);
+    // alert(myColor);
 
     if (myColor === "w") {
         timeLeftTop = updatedRoomData["time-left-black"];
@@ -156,7 +166,7 @@ function updateTimeLeft(updatedRoomData, chessGame) {
         timeLeftBottom = updatedRoomData["time-left-black"];
     }
 
-    alert(chessGame.turn());
+    // alert(chessGame.turn());
 
     if (chessGame.turn() === myColor) {
         timeLeftBottom -= timeFromLastMove;
@@ -233,34 +243,38 @@ async function main() {
                 typeof updatedRoomData["white"] === "string" &&
                 typeof updatedRoomData["black"] === "string"
             ) {
-                if (roomData["moves"] === updatedRoomData["moves"]) {
-                    // update everything, it was a page refresh.
-
-                    await updateUserNames(updatedRoomData);
-                    await updateGameField(updatedRoomData);
-                    chessGame.load_pgn(roomData["moves"]);
-                    updateTimeLeft(updatedRoomData, chessGame);
-                    // await window.chessboard.setPosition(chessGame.fen(), true);
-                    await window.chessboard.setPosition(chessGame.fen());
-                    await setupGame(chessGame);
+                if (updatedRoomData["result"] !== undefined) {
+                    showGameResult(updatedRoomData["result"]);
                 }
                 else {
-                    // update only position and time left
+                    if (roomData["moves"] === updatedRoomData["moves"]) {
+                        // update everything, it was a page refresh.
 
-                    if (updateBoard) {
-                        // it was not our move.
-
-                        chessGame.load_pgn(updatedRoomData["moves"]);
-                        await window.chessboard.setPosition(chessGame.fen(), true);
+                        await updateUserNames(updatedRoomData);
+                        await updateGameField(updatedRoomData);
+                        chessGame.load_pgn(roomData["moves"]);
+                        updateTimeLeft(updatedRoomData, chessGame);
+                        // await window.chessboard.setPosition(chessGame.fen(), true);
+                        await window.chessboard.setPosition(chessGame.fen());
+                        await setupGame(chessGame);
                     }
                     else {
-                        updateBoard = true;
-                    }
+                        // update only position and time left
 
-                    updateTimeLeft(updatedRoomData, chessGame);
-                    // await window.chessboard.setPosition(updatedRoomData["position"], true);
+                        if (updateBoard) {
+                            // it was not our move.
+
+                            chessGame.load_pgn(updatedRoomData["moves"]);
+                            updateTimeLeft(updatedRoomData, chessGame);
+                            await window.chessboard.setPosition(chessGame.fen(), true);
+                        }
+                        else {
+                            updateBoard = true;
+                        }
+                        // await window.chessboard.setPosition(updatedRoomData["position"], true);
+                    }
+                    roomData = updatedRoomData;
                 }
-                roomData = updatedRoomData;
             }
         });
 
