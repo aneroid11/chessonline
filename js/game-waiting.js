@@ -114,20 +114,54 @@ function convertSecondsToMinutesSeconds(seconds) {
     return `${Math.floor(seconds / 60)}:${Math.floor(seconds % 60)}`;
 }
 
-function updateTimeLeft(roomData) {
-    alert("update time left");
+function updateTimeLeft(updatedRoomData, chessGame) {
+    // alert("update time left");
 
     if (iAmWhite) {
+        timeLeftTop = updatedRoomData["time-left-black"];
+        timeLeftBottom = updatedRoomData["time-left-white"];
         document.getElementById("game-waiting-top-time-left").textContent =
-            convertSecondsToMinutesSeconds(roomData["time-left-black"]);
+            convertSecondsToMinutesSeconds(updatedRoomData["time-left-black"]);
         document.getElementById("game-waiting-bottom-time-left").textContent =
-            convertSecondsToMinutesSeconds(roomData["time-left-white"]);
+            convertSecondsToMinutesSeconds(updatedRoomData["time-left-white"]);
     }
     else {
+        timeLeftTop = updatedRoomData["time-left-white"];
+        timeLeftBottom = updatedRoomData["time-left-black"];
         document.getElementById("game-waiting-bottom-time-left").textContent =
-            convertSecondsToMinutesSeconds(roomData["time-left-black"]);
+            convertSecondsToMinutesSeconds(updatedRoomData["time-left-black"]);
         document.getElementById("game-waiting-top-time-left").textContent =
-            convertSecondsToMinutesSeconds(roomData["time-left-white"]);
+            convertSecondsToMinutesSeconds(updatedRoomData["time-left-white"]);
+    }
+
+    recreateTimer(chessGame);
+}
+
+let timer = null;
+function recreateTimer(chessGame) {
+    if (timer !== null) {
+        clearInterval(timer);
+    }
+
+    timer = setInterval(timerFunc, 1000, chessGame);
+}
+
+function timerFunc(chessGame) {
+    const myColor = iAmWhite ? "w" : "b";
+
+    if (chessGame.turn() === myColor) {
+        document.getElementById("game-waiting-bottom-time-left").textContent =
+            convertSecondsToMinutesSeconds(timeLeftBottom);
+        if (timeLeftBottom > 0) {
+            timeLeftBottom--;
+        }
+    }
+    else {
+        document.getElementById("game-waiting-top-time-left").textContent =
+            convertSecondsToMinutesSeconds(timeLeftTop);
+        if (timeLeftTop > 0) {
+            timeLeftTop--;
+        }
     }
 }
 
@@ -231,7 +265,7 @@ async function main() {
                 if (roomData["moves"] === updatedRoomData["moves"]) {
                     // update everything, it was a page refresh.
 
-                    updateTimeLeft(updatedRoomData);
+                    updateTimeLeft(updatedRoomData, chessGame);
 
                     await updateUserNames(updatedRoomData);
                     await updateGameField(updatedRoomData);
@@ -242,7 +276,7 @@ async function main() {
                 else {
                     // update only position and time left
 
-                    updateTimeLeft(updatedRoomData);
+                    updateTimeLeft(updatedRoomData, chessGame);
 
                     if (updateBoard) {
                         // it was not our move.
