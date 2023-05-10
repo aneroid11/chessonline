@@ -46,7 +46,6 @@ async function setupGame(chessGame) {
     document.getElementById("game-cancel-button").style.display = "none";
     document.getElementById("game-draw-button").style.display = "inline-block";
     document.getElementById("game-resign-button").style.display = "inline-block";
-    // alert("play game");
 
     window.chessboard.enableMoveInput((event) => {
         switch (event.type) {
@@ -71,6 +70,11 @@ async function setupGame(chessGame) {
                 break;
         }
     }, amIWhite(roomData) ? COLOR.white : COLOR.black);
+
+    if (roomData["game-start"] === undefined) {
+        // start the game
+        await updateRoomData(gameId, {"game-start": Date.now()});
+    }
 }
 
 async function main() {
