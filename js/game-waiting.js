@@ -77,11 +77,32 @@ async function setupGame(chessGame) {
     }
 }
 
+function convertSecondsToMinutesSeconds(seconds) {
+    return `${Math.floor(seconds / 60)}:${Math.floor(seconds % 60)}`;
+}
+
+function startTimer(startCount) {
+    let currCount = startCount;
+
+    setInterval(
+        () => {
+            document.getElementById("game-waiting-bottom-time-left").textContent =
+                convertSecondsToMinutesSeconds(currCount);
+
+            if (currCount > 0) {
+                currCount--;
+            }
+        },
+        1000
+    )
+}
+
 async function main() {
     const chessGame
         = new Chess();
 
-    
+    startTimer(30);
+
     if (!userIsAuthenticated()) {
         window.location.href = "login.html"
     }
