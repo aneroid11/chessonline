@@ -8,7 +8,7 @@ import {
     update, onValue
 } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
 import {getAuth} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js";
-import {FEN} from "https://cdn.jsdelivr.net/npm/cm-chessboard@7/src/cm-chessboard/Chessboard.js";
+// import {FEN} from "https://cdn.jsdelivr.net/npm/cm-chessboard@7/src/cm-chessboard/Chessboard.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyDCUea-F9S2qmzHY3ib0Paav9dBYq2rXYI",
@@ -40,7 +40,7 @@ async function createGameRoom(time_limit, current_user_color) {
         newRoom["white"] = null;
     }
 
-    newRoom["position"] = FEN.start;
+    newRoom["moves"] = "";
 
     const roomRef = await push(gameRoomsRef, newRoom);
     return roomRef.key;

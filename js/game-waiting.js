@@ -40,7 +40,7 @@ async function updateGameField(roomData) {
     }
 }
 
-async function startGame(chessGame) {
+async function setupGame(chessGame) {
     document.getElementById("game-link").style.display = "none";
     document.getElementById("game-cancel-button").style.display = "none";
     document.getElementById("game-draw-button").style.display = "inline-block";
@@ -74,12 +74,13 @@ async function startGame(chessGame) {
 async function main() {
     const chessGame
         = new Chess();
-    chessGame.move({"from": "e2", "to": "e4"});
-    chessGame.move({"from": "e7", "to": "e5"});
-    chessGame.move({"from": "g1", "to": "f3"});
-    chessGame.move({"from": "b8", "to": "c6"});
-    alert(chessGame.pgn());
-    alert(chessGame.ascii());
+    //     = new Chess();
+    // chessGame.move({"from": "e2", "to": "e4"});
+    // chessGame.move({"from": "e7", "to": "e5"});
+    // chessGame.move({"from": "g1", "to": "f3"});
+    // chessGame.move({"from": "b8", "to": "c6"});
+    // alert(chessGame.pgn());
+    // alert(chessGame.ascii());
 
     if (!userIsAuthenticated()) {
         window.location.href = "login.html"
@@ -117,18 +118,20 @@ async function main() {
                 typeof updatedRoomData["white"] === "string" &&
                 typeof updatedRoomData["black"] === "string"
             ) {
-                if (roomData["position"] === updatedRoomData["position"]) {
+                if (roomData["moves"] === updatedRoomData["moves"]) {
                     await updateUserNames(updatedRoomData);
                     await updateGameField(updatedRoomData);
+                    chessGame.load_pgn(roomData["moves"]);
                     await window.chessboard.setPosition(chessGame.fen(), true);
                     // await window.chessboard.setPosition(updatedRoomData["position"], true);
                     // chessGame.setPosition()
-                    await startGame(chessGame);
+                    await setupGame(chessGame);
                 }
                 else {
                     // update only position
-                    // chessGame = Chess(window.chessboard.getPosition());
-                    await window.chessboard.setPosition(updatedRoomData["position"], true);
+                    chessGame.load_pgn(updatedRoomData["moves"]);
+                    await window.chessboard.setPosition(chessGame.fen(), true);
+                    // await window.chessboard.setPosition(updatedRoomData["position"], true);
                 }
                 roomData = updatedRoomData;
             }
