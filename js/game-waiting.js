@@ -14,6 +14,8 @@ let roomData = {};
 const userNames = {};
 let updateBoard = true;
 let iAmWhite = null;
+let timeLeftTop = 0;
+let timeLeftBottom = 0;
 
 async function updateUserNames(roomData) {
     if (typeof roomData["white"] === "string") {
@@ -63,7 +65,15 @@ async function setupGame(chessGame) {
                 if (result) {
                     updateBoard = false;
                     event.chessboard.setPosition(chessGame.fen());
-                    updateRoomData(gameId, {"moves": chessGame.pgn()});
+                    updateRoomData(
+                        gameId,
+                        {
+                            "moves": chessGame.pgn(),
+                            "last-move": Math.floor(Date.now() / 1000),
+                            "time-left-white": iAmWhite ? timeLeftBottom : timeLeftTop,
+                            "time-left-black": iAmWhite ? timeLeftTop : timeLeftBottom
+                        }
+                    );
                     return true;
                 }
 
@@ -77,14 +87,14 @@ async function setupGame(chessGame) {
     if (roomData["game-start"] === undefined) {
         // start the game
         await updateRoomData(gameId, {
-            "game-start": Date.now(),
-            "last-move": Date.now(),
+            "game-start": Math.floor(Date.now() / 1000),
+            "last-move": Math.floor(Date.now() / 1000),
             "time-left-white": roomData["time-limit"] * 60,
             "time-left-black": roomData["time-limit"] * 60
         });
     }
 
-    startTimer(roomData["time-limit"] * 60, chessGame);
+    // startTimer(roomData["time-limit"] * 60, chessGame);
 }
 
 function convertSecondsToMinutesSeconds(seconds) {
@@ -92,26 +102,25 @@ function convertSecondsToMinutesSeconds(seconds) {
 }
 
 function startTimer(startCount, chessGame) {
-    // let currCount = startCount;
-    let currBottomCount = startCount;
-    let currTopCount = startCount;
+    timeLeftTop = startCount;
+    timeLeftBottom = startCount;
 
     setInterval(
         () => {
             document.getElementById("game-waiting-bottom-time-left").textContent =
-                convertSecondsToMinutesSeconds(currBottomCount);
+                convertSecondsToMinutesSeconds(timeLeftBottom);
             document.getElementById("game-waiting-top-time-left").textContent =
-                convertSecondsToMinutesSeconds(currTopCount);
+                convertSecondsToMinutesSeconds(timeLeftTop);
 
             const myColor = iAmWhite ? "w" : "b";
             if (chessGame.turn() === myColor) {
-                if (currBottomCount > 0) {
-                    currBottomCount--;
+                if (timeLeftBottom > 0) {
+                    timeLeftBottom--;
                 }
             }
             else {
-                if (currTopCount > 0) {
-                    currTopCount--;
+                if (timeLeftTop > 0) {
+                    timeLeftTop--;
                 }
             }
         },
@@ -159,6 +168,35 @@ async function main() {
                 typeof updatedRoomData["white"] === "string" &&
                 typeof updatedRoomData["black"] === "string"
             ) {
+                // if (updatedRoomData["game-start"] !== undefined) {
+                //     // game already started, update the timers
+                //     iAmWhite = amIWhite(roomData);
+                //     timeLeftTop = iAmWhite ? updatedRoomData["time-left-black"] : updatedRoomData["time-left-white"];
+                //     timeLeftBottom = iAmWhite ? updatedRoomData["time-left-white"] : updatedRoomData["time-left-black"];
+                //
+                //     // timeLeft -= currTime - lastMoveTime;
+                //     const myColor = iAmWhite ? "w" : "b";
+                //
+                //     alert(myColor);
+                //
+                //     if (chessGame.turn() === myColor) {
+                //         // alert(Date.now());
+                //         // alert(updatedRoomData["last-move"]);
+                //         alert(Date.now() - updatedRoomData["last-move"]);
+                //         timeLeftBottom -= Date.now() - updatedRoomData["last-move"];
+                //     }
+                //     else {
+                //         alert(Date.now());
+                //         alert(updatedRoomData["last-move"]);
+                //         timeLeftTop -= Date.now() - updatedRoomData["last-move"];
+                //     }
+                //
+                //     document.getElementById("game-waiting-top-time-left").textContent =
+                //         convertSecondsToMinutesSeconds(timeLeftTop);
+                //     document.getElementById("game-waiting-bottom-time-left").textContent =
+                //         convertSecondsToMinutesSeconds(timeLeftBottom);
+                // }
+
                 if (roomData["moves"] === updatedRoomData["moves"]) {
                     await updateUserNames(updatedRoomData);
                     await updateGameField(updatedRoomData);
