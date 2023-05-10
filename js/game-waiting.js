@@ -60,18 +60,33 @@ async function setupGame(chessGame) {
             case INPUT_EVENT_TYPE.validateMoveInput:
                 // return true, if input is accepted/valid, `false` takes the move back
 
+                const currTurn = chessGame.turn();
                 // pawns are promoted to Queens only.
                 const result = chessGame.move({"from": event.squareFrom, "to": event.squareTo, "promotion": "q"});
                 if (result) {
                     updateBoard = false;
                     event.chessboard.setPosition(chessGame.fen());
+
+                    const prevLastMove = roomData["last-move"];
+                    const timeSpent = Math.floor(Date.now() / 1000) - prevLastMove;
+                    const prevTimeLeftWhite = roomData["time-left-white"];
+                    const prevTimeLeftBlack = roomData["time-left-black"];
+                    let newTimeLeftWhite = prevTimeLeftWhite;
+                    let newTimeLeftBlack = prevTimeLeftBlack;
+
+                    if (currTurn === "w") {
+                        newTimeLeftWhite -= timeSpent;
+                    }
+                    else {
+                        newTimeLeftBlack -= timeSpent;
+                    }
                     updateRoomData(
                         gameId,
                         {
                             "moves": chessGame.pgn(),
                             "last-move": Math.floor(Date.now() / 1000),
-                            "time-left-white": iAmWhite ? timeLeftBottom : timeLeftTop,
-                            "time-left-black": iAmWhite ? timeLeftTop : timeLeftBottom
+                            "time-left-white": newTimeLeftWhite,
+                            "time-left-black": newTimeLeftBlack
                         }
                     );
                     return true;
