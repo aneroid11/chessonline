@@ -117,8 +117,9 @@ function convertSecondsToMinutesSeconds(seconds) {
 function updateTimeLeft(updatedRoomData, chessGame) {
     // alert("update time left");
     const timeFromLastMove = Math.floor(Date.now() / 1000) - updatedRoomData["last-move"];
+    const myColor = amIWhite(updatedRoomData) ? "w" : "b";
 
-    if (iAmWhite) {
+    if (myColor === "w") {
         timeLeftTop = updatedRoomData["time-left-black"];
         timeLeftBottom = updatedRoomData["time-left-white"];
         document.getElementById("game-waiting-top-time-left").textContent =
@@ -134,27 +135,27 @@ function updateTimeLeft(updatedRoomData, chessGame) {
         document.getElementById("game-waiting-top-time-left").textContent =
             convertSecondsToMinutesSeconds(updatedRoomData["time-left-white"]);
     }
-    if (chessGame.turn() === "w") {
+    if (chessGame.turn() === myColor) {
         timeLeftBottom -= timeFromLastMove;
     }
     else {
         timeLeftTop -= timeFromLastMove;
     }
 
-    recreateTimer(chessGame);
+    recreateTimer(chessGame, updatedRoomData);
 }
 
 let timer = null;
-function recreateTimer(chessGame) {
+function recreateTimer(chessGame, roomData) {
     if (timer !== null) {
         clearInterval(timer);
     }
 
-    timer = setInterval(timerFunc, 1000, chessGame);
+    timer = setInterval(timerFunc, 1000, chessGame, roomData);
 }
 
-function timerFunc(chessGame) {
-    const myColor = iAmWhite ? "w" : "b";
+function timerFunc(chessGame, roomData) {
+    const myColor = amIWhite(roomData) ? "w" : "b";
 
     if (chessGame.turn() === myColor) {
         document.getElementById("game-waiting-bottom-time-left").textContent =
@@ -183,7 +184,7 @@ function startTimer(startCount, chessGame) {
             document.getElementById("game-waiting-top-time-left").textContent =
                 convertSecondsToMinutesSeconds(timeLeftTop);
 
-            const myColor = iAmWhite ? "w" : "b";
+            const myColor = amIWhite(roomData) ? "w" : "b";
             if (chessGame.turn() === myColor) {
                 if (timeLeftBottom > 0) {
                     timeLeftBottom--;
