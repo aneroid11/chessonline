@@ -54,14 +54,14 @@ async function setupGame(chessGame) {
                 return true
             case INPUT_EVENT_TYPE.validateMoveInput:
                 // return true, if input is accepted/valid, `false` takes the move back
-                // updateRoomData(gameId, {"position": window.chessboard.getPosition()});
-                // try {
-                //     chessGame.move({"from": event.squareFrom, "to": event.squareTo});
-                //     updateRoomData(gameId, {"position": chessGame.fen()});
-                // }
-                // catch (error) {
-                //     return false;
-                // }
+                
+                try {
+                    chessGame.move({"from": event.squareFrom, "to": event.squareTo});
+                    updateRoomData(gameId, {"moves": chessGame.pgn()});
+                }
+                catch (error) {
+                    return false;
+                }
 
                 return true;
             case INPUT_EVENT_TYPE.moveInputCanceled:
