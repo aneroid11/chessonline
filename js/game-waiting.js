@@ -12,6 +12,7 @@ import {getProfileInfoByUid} from "./api/users.js";
 let gameId = null;
 let roomData = {};
 const userNames = {};
+let updateBoard = true;
 
 async function updateUserNames(roomData) {
     if (typeof roomData["white"] === "string") {
@@ -56,6 +57,7 @@ async function setupGame(chessGame) {
                 // return true, if input is accepted/valid, `false` takes the move back
                 const result = chessGame.move({"from": event.squareFrom, "to": event.squareTo});
                 if (result) {
+                    updateBoard = false;
                     updateRoomData(gameId, {"moves": chessGame.pgn()});
                     return true;
                 }
@@ -126,8 +128,15 @@ async function main() {
                 }
                 else {
                     // update only position
-                    chessGame.load_pgn(updatedRoomData["moves"]);
-                    await window.chessboard.setPosition(chessGame.fen(), true);
+                    if (updateBoard) {
+                        // it was not our move.
+
+                        chessGame.load_pgn(updatedRoomData["moves"]);
+                        await window.chessboard.setPosition(chessGame.fen(), true);
+                    }
+                    else {
+                        updateBoard = true;
+                    }
                     // await window.chessboard.setPosition(updatedRoomData["position"], true);
                 }
                 roomData = updatedRoomData;
