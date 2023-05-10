@@ -76,7 +76,12 @@ async function setupGame(chessGame) {
 
     if (roomData["game-start"] === undefined) {
         // start the game
-        await updateRoomData(gameId, {"game-start": Date.now()});
+        await updateRoomData(gameId, {
+            "game-start": Date.now(),
+            "last-move": Date.now(),
+            "time-left-white": roomData["time-limit"] * 60,
+            "time-left-black": roomData["time-limit"] * 60
+        });
     }
 
     startTimer(roomData["time-limit"] * 60, chessGame);
