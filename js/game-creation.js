@@ -33,11 +33,11 @@ async function createGame(event) {
 
     let time_limit_num = 0;
 
-    if (selected_time_limit === "5min") {time_limit_num = 0.5;}
+    if (selected_time_limit === "5min") {time_limit_num = 5;}
     else if (selected_time_limit === "15min") {time_limit_num = 15;}
     else if (selected_time_limit === "30min") {time_limit_num = 30;}
     // else {time_limit_num = [5, 15, 30][getRandomFromAToB(0, 2)]}
-    else {time_limit_num = [0.5, 15, 30][getRandomFromAToB(0, 2)]}
+    else {time_limit_num = [5, 15, 30][getRandomFromAToB(0, 2)]}
 
     if (selected_color === "random") {
         selected_color = getRandomFromAToB(0, 1) === 0 ? "white" : "black";
