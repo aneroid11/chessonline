@@ -12,7 +12,10 @@ async function main() {
 
     for (const [key, value] of Object.entries(allRooms)) {
         // alert(key value);
-        alert(key);
+        // alert(key);
+        if (value["result"] !== undefined) {
+            alert(value["statistics-string"]);
+        }
     }
 }
 
