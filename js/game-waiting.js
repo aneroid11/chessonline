@@ -19,11 +19,11 @@ let timeLeftBottom = 0;
 let gameFinished = false;
 
 async function updateUserNames(roomData) {
-    if (typeof roomData["white"] === "string") {
+    if (typeof roomData["white"] === "string" && userNames["white"] === undefined) {
         const profileInfo = await getProfileInfoByUid(roomData["white"]);
         userNames["white"] = profileInfo["name"];
     }
-    if (typeof roomData["black"] === "string") {
+    if (typeof roomData["black"] === "string"  && userNames["black"] === undefined) {
         const profileInfo = await getProfileInfoByUid(roomData["black"]);
         userNames["black"] = profileInfo["name"];
     }
@@ -313,12 +313,12 @@ async function main() {
                     // update everything
 
                     await updateUserNames(updatedRoomData);
-                    await updateGameField(updatedRoomData);
+                    await updateGameField(updatedRoomData); // remove await?
                     chessGame.load_pgn(roomData["moves"]);
                     updateTimeLeft(updatedRoomData, chessGame);
                     // await window.chessboard.setPosition(chessGame.fen(), true);
-                    await window.chessboard.setPosition(chessGame.fen(), true);
-                    await setupGame(chessGame);
+                    await window.chessboard.setPosition(chessGame.fen(), true); // remove await?
+                    await setupGame(chessGame); // remove await?
                 }
                 else {
                     // update only position and time left
@@ -327,7 +327,7 @@ async function main() {
                         // it was not our move.
                         chessGame.load_pgn(updatedRoomData["moves"]);
                         // await window.chessboard.setPosition(chessGame.fen(), true);
-                        await window.chessboard.setPosition(chessGame.fen(), true);
+                        window.chessboard.setPosition(chessGame.fen(), true);
                         updateTimeLeft(updatedRoomData, chessGame);
                     }
                     else {
