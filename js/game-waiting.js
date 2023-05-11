@@ -237,12 +237,19 @@ function timerFunc(chessGame, roomData) {
 async function onDrawButtonClicked(event) {
     event.preventDefault();
 
+    const myColor = iAmWhite ? "w" : "b";
+
     if (roomData["offer-draw"] === undefined) {
         // we are offering a draw
         await updateRoomData(gameId, {
             "offer-draw": "offered",
             "draw-offerer": iAmWhite ? "w" : "b"
         })
+    }
+    else {
+        if (roomData["offer-draw"] === "offered" && roomData["draw-offerer"] !== myColor) {
+            await finishGame("draw");
+        }
     }
 }
 
