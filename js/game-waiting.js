@@ -223,6 +223,11 @@ function timerFunc(chessGame, roomData) {
     showTimeLeft();
 
     if (chessGame.turn() === myColor) {
+        if (timeLeftBottom < 1) {
+            // opponent wins
+            finishGame(myColor === "w" ? "black" : "white");
+        }
+
         if (timeLeftBottom > 0) {
             timeLeftBottom--;
         }
