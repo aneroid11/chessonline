@@ -306,36 +306,32 @@ async function main() {
                 typeof updatedRoomData["black"] === "string"
             ) {
                 console.log("new update");
-                // else {
-                    if (roomData["moves"] === updatedRoomData["moves"]) {
-                        // update everything
+                if (roomData["moves"] === updatedRoomData["moves"]) {
+                    // update everything
 
-                        await updateUserNames(updatedRoomData);
-                        await updateGameField(updatedRoomData);
-                        chessGame.load_pgn(roomData["moves"]);
-                        updateTimeLeft(updatedRoomData, chessGame);
-                        // await window.chessboard.setPosition(chessGame.fen(), true);
+                    await updateUserNames(updatedRoomData);
+                    await updateGameField(updatedRoomData);
+                    chessGame.load_pgn(roomData["moves"]);
+                    updateTimeLeft(updatedRoomData, chessGame);
+                    // await window.chessboard.setPosition(chessGame.fen(), true);
+                    await window.chessboard.setPosition(chessGame.fen(), true);
+                    await setupGame(chessGame);
+                }
+                else {
+                    // update only position and time left
+
+                    if (updateBoard) {
+                        // it was not our move.
+                        chessGame.load_pgn(updatedRoomData["moves"]);
                         await window.chessboard.setPosition(chessGame.fen(), true);
-                        await setupGame(chessGame);
+                        // await window.chessboard.setPosition(chessGame.fen());
+                        updateTimeLeft(updatedRoomData, chessGame);
                     }
                     else {
-                        // update only position and time left
-
-                        if (updateBoard) {
-                            // it was not our move.
-
-                            chessGame.load_pgn(updatedRoomData["moves"]);
-                            await window.chessboard.setPosition(chessGame.fen(), true);
-                            // await window.chessboard.setPosition(chessGame.fen());
-                            updateTimeLeft(updatedRoomData, chessGame);
-                        }
-                        else {
-                            updateBoard = true;
-                        }
-                        // await window.chessboard.setPosition(updatedRoomData["position"], true);
+                        updateBoard = true;
                     }
-                    roomData = updatedRoomData;
-                // }
+                    // await window.chessboard.setPosition(updatedRoomData["position"], true);
+                }
 
                 if (updatedRoomData["offer-draw"] !== undefined) {
                     if (updatedRoomData["offer-draw"] === "offered" &&
@@ -344,14 +340,17 @@ async function main() {
                             iAmWhite && updatedRoomData["draw-offerer"] === "b"
                         )
                     ) {
-                        document.getElementById("game-message").style.display = "block";
+                        document.getElementById("game-message").style.display = "inline-block";
                         document.getElementById("game-message").textContent = "Draw?";
                     }
                 }
                 if (updatedRoomData["result"] !== undefined) {
                     gameFinished = true;
                     showGameResult(updatedRoomData["result"]);
+                    window.chessboard.disableMoveInput();
                 }
+
+                roomData = updatedRoomData;
             }
         });
 
