@@ -41,7 +41,10 @@ async function updateGameField(roomData) {
             userNames["black"];
         document.getElementById("game-waiting-top-name").textContent =
             userNames["white"];
-        await window.chessboard.setOrientation(COLOR.black, true);
+
+        if (window.chessboard.getOrientation() !== COLOR.black) {
+            await window.chessboard.setOrientation(COLOR.black, true);
+        }
     }
 }
 
@@ -314,7 +317,7 @@ async function main() {
                     chessGame.load_pgn(roomData["moves"]);
                     updateTimeLeft(updatedRoomData, chessGame);
                     // await window.chessboard.setPosition(chessGame.fen(), true);
-                    await window.chessboard.setPosition(chessGame.fen(), true);
+                    await window.chessboard.setPosition(chessGame.fen());
                     await setupGame(chessGame);
                 }
                 else {
@@ -323,8 +326,8 @@ async function main() {
                     if (updateBoard) {
                         // it was not our move.
                         chessGame.load_pgn(updatedRoomData["moves"]);
-                        await window.chessboard.setPosition(chessGame.fen(), true);
-                        // await window.chessboard.setPosition(chessGame.fen());
+                        // await window.chessboard.setPosition(chessGame.fen(), true);
+                        await window.chessboard.setPosition(chessGame.fen());
                         updateTimeLeft(updatedRoomData, chessGame);
                     }
                     else {
