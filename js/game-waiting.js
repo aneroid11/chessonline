@@ -48,9 +48,15 @@ async function updateGameField(roomData) {
     }
 }
 
+function formStatisticsString(result) {
+    const myColor = iAmWhite ? "white" : "black";
+    return "statistics string";
+}
+
 async function finishGame(result) {
     await updateRoomData(gameId, {
-        "result": result
+        "result": result,
+        "statistics-string": formStatisticsString(result)
     });
 }
 

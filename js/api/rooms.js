@@ -106,4 +106,16 @@ function amIWhite(roomData) {
         (roomData["black"] !== auth.currentUser.uid && roomData["white"] == null);
 }
 
-export {createGameRoom, getRoomData, connectCurrUserToRoom, listenForRoomUpdates, amIWhite, updateRoomData}
+async function getAllRooms() {
+    try {
+        const data = await get(gameRoomsRef);
+        return data.val();
+    }
+    catch (error) {
+        return null;
+    }
+}
+
+export {
+    createGameRoom, getRoomData, connectCurrUserToRoom, listenForRoomUpdates, amIWhite, updateRoomData, getAllRooms
+}
