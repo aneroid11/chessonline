@@ -50,7 +50,14 @@ async function updateGameField(roomData) {
 
 function formStatisticsString(result) {
     const myColor = iAmWhite ? "white" : "black";
-    return "statistics string";
+    const oppColor = iAmWhite ? "black" : "white";
+    const opponentName = userNames[oppColor];
+
+    let statString = "Opponent name: " + opponentName + "\n";
+    statString += "Time limit: " + roomData["time-limit"] + " min\n";
+    statString += "You played " + myColor;
+
+    return statString;
 }
 
 async function finishGame(result) {

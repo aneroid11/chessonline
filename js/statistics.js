@@ -18,10 +18,16 @@ async function main() {
             const newArticle = document.createElement("article");
             let htmlStr = "";
             htmlStr += '<article class=\"statistics__game-result\">';
-            htmlStr += value["statistics-string"];
+            htmlStr += value["statistics-string"].replaceAll("\n", "<br>");
             htmlStr += '</article>';
             newArticle.innerHTML = htmlStr;
-            document.getElementById("statistics-wins-list").appendChild(newArticle);
+
+            if (value["result"] === "draw") {
+                document.getElementById("statistics-draws-list").appendChild(newArticle);
+            }
+            else {
+                document.getElementById("statistics-wins-list").appendChild(newArticle);
+            }
         }
     }
 }
