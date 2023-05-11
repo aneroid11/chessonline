@@ -6,13 +6,11 @@ if (!userIsAuthenticated()) {
 }
 
 async function main() {
-    // достать все комнаты, в которых мы есть и в которых есть result.
-    // достать все комнаты.
     const allRooms = await getAllRooms();
     const myUid = document.cookie.split(";")[0].split("=")[1];
 
     for (const [key, value] of Object.entries(allRooms)) {
-        if (value["statistics-string"] !== undefined && (myUid === value["white"] || myUid === value["black"])) {
+        if (value["result"] !== undefined && (myUid === value["white"] || myUid === value["black"])) {
             // alert(value["statistics-string"]);
             const newArticle = document.createElement("article");
             let htmlStr = "";

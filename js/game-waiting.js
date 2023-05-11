@@ -53,9 +53,10 @@ function formStatisticsString(result) {
     const oppColor = iAmWhite ? "black" : "white";
     const opponentName = userNames[oppColor];
 
-    let statString = "Opponent name: " + opponentName + "\n";
+    let statString = userNames[myColor] + " vs " + opponentName + "\n";
     statString += "Time limit: " + roomData["time-limit"] + " min\n";
-    statString += "You played " + myColor;
+    statString += userNames[myColor] + " played " + myColor + "\n";
+    statString += userNames[oppColor] + " played " + oppColor + "\n";
 
     return statString;
 }
