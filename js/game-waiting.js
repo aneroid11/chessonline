@@ -234,6 +234,18 @@ function timerFunc(chessGame, roomData) {
     }
 }
 
+async function onDrawButtonClicked(event) {
+    event.preventDefault();
+
+    if (roomData["offer-draw"] === undefined) {
+        // we are offering a draw
+        await updateRoomData(gameId, {
+            "offer-draw": "offered",
+            "draw-offerer": iAmWhite ? "w" : "b"
+        })
+    }
+}
+
 async function main() {
     const chessGame
         = new Chess();
@@ -259,21 +271,22 @@ async function main() {
 
     console.log("connect to game room: " + gameId);
 
+    document.getElementById("game-resign-button").addEventListener(
+        "click", (event) => {
+            event.preventDefault();
+
+            const winnerColor = iAmWhite ? "black" : "white";
+            finishGame(winnerColor);
+        }
+    );
+    document.getElementById("game-draw-button").addEventListener("click", onDrawButtonClicked);
+
     roomData = await getRoomData(gameId);
     if (roomData == null) {
         window.location.replace("game-creation.html");
     }
     else {
-        iAmWhite = amIWhite(roomData);
-
-        document.getElementById("game-resign-button").addEventListener(
-            "click", (event) => {
-                event.preventDefault();
-
-                const winnerColor = iAmWhite ? "black" : "white";
-                finishGame(winnerColor);
-            }
-        )
+        iAmWhite = amIWhite(roomData); // seems like this iAmWhite is perfectly valid.
 
         listenForRoomUpdates(gameId, async (updatedRoomData) => {
             if (
@@ -312,6 +325,17 @@ async function main() {
                     roomData = updatedRoomData;
                 // }
 
+                if (updatedRoomData["offer-draw"] !== undefined) {
+                    if (updatedRoomData["offer-draw"] === "offered" &&
+                        (
+                            !iAmWhite && updatedRoomData["draw-offerer"] === "w" ||
+                            iAmWhite && updatedRoomData["draw-offerer"] === "b"
+                        )
+                    ) {
+                        document.getElementById("game-message").style.display = "block";
+                        document.getElementById("game-message").textContent = "Draw?";
+                    }
+                }
                 if (updatedRoomData["result"] !== undefined) {
                     gameFinished = true;
                     showGameResult(updatedRoomData["result"]);
