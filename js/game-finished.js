@@ -1,5 +1,7 @@
-import { userIsAuthenticated } from "./app.js";
+window.location.replace("index.html");
 
-if (!userIsAuthenticated()) {
-    window.location.href = "login.html"
-}
+// import { userIsAuthenticated } from "./app.js";
+//
+// if (!userIsAuthenticated()) {
+//     window.location.href = "login.html"
+// }
