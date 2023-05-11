@@ -13,8 +13,15 @@ async function main() {
     for (const [key, value] of Object.entries(allRooms)) {
         // alert(key value);
         // alert(key);
-        if (value["result"] !== undefined) {
-            alert(value["statistics-string"]);
+        if (value["statistics-string"] !== undefined) {
+            // alert(value["statistics-string"]);
+            const newArticle = document.createElement("article");
+            let htmlStr = "";
+            htmlStr += '<article class=\"statistics__game-result\">';
+            htmlStr += value["statistics-string"];
+            htmlStr += '</article>';
+            newArticle.innerHTML = htmlStr;
+            document.getElementById("statistics-wins-list").appendChild(newArticle);
         }
     }
 }
