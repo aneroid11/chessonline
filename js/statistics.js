@@ -11,12 +11,10 @@ async function main() {
 
     for (const [key, value] of Object.entries(allRooms)) {
         if (value["result"] !== undefined && (myUid === value["white"] || myUid === value["black"])) {
-            // alert(value["statistics-string"]);
             const newArticle = document.createElement("article");
+            newArticle.className = "statistics__game-result";
             let htmlStr = "";
-            htmlStr += '<article class=\"statistics__game-result\">';
             htmlStr += value["statistics-string"].replaceAll("\n", "<br>");
-            htmlStr += '</article>';
             newArticle.innerHTML = htmlStr;
 
             if (value["result"] === "draw") {
