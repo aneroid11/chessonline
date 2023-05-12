@@ -173,8 +173,6 @@ function enableMoveInput(chessGame) {
     );
 }
 
-let onRoomUpdateFinished = true;
-
 async function setupGame(chessGame, updatedRoomData) {
     document.getElementById("game-link").style.display = "none";
     document.getElementById("game-cancel-button").style.display = "none";
@@ -318,16 +316,13 @@ function onConnect(chessGame) {
 }
 
 async function onRoomUpdate(chessGame, updatedRoomData) {
-    alert("onRoomUpdate started");
-
-    onRoomUpdateFinished = false;
-
+    // alert("onRoomUpdate started");
     if (
         typeof updatedRoomData["white"] === "string" &&
         typeof updatedRoomData["black"] === "string"
     ) {
-        // console.log("new update");
-        alert("new update");
+        console.log("new update");
+        // alert("new update");
         // alert("updatedRoomData['game-start'] == " + updatedRoomData["game-start"]);
 
         if (roomData["moves"] === updatedRoomData["moves"]) {
@@ -376,8 +371,6 @@ async function onRoomUpdate(chessGame, updatedRoomData) {
         // alert("roomData = updatedRoomData");
         roomData = updatedRoomData;
     }
-
-    onRoomUpdateFinished = true;
 }
 
 async function main() {
