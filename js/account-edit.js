@@ -20,15 +20,14 @@ async function saveChanges(event) {
             await changeUserName(result.uid, nameInput.value)
         }
         if (newPasswordInput.value.length > 0) {
-            changeUserPassword(result.uid, newPasswordInput.value)
+            await changeUserPassword(result.uid, newPasswordInput.value)
         }
+
+        window.location.replace("account.html");
     }
     else {
         document.getElementById("acc-edit-form-error").textContent = result
     }
-
-    // alert("save changes")
-    // window.location.replace("account.html")
 }
 
 function checkPasswordLength(event) {

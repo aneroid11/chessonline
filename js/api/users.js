@@ -81,6 +81,7 @@ async function getUserProfileInfo() {
         userId = params[0].split('=')[1];
     }
     else {
+        // alert("user=");
         return null
     }
 
@@ -89,6 +90,7 @@ async function getUserProfileInfo() {
         return {"name": response.val().name}
     }
     catch (error) {
+        // alert(error);
         console.log(error)
         return null
     }
