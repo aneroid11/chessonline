@@ -191,7 +191,6 @@ function updateTimeLeft(updatedRoomData, chessGame) {
 
     const timeFromLastMove = Math.floor(Date.now() / 1000) - updatedRoomData["last-move"];
     const myColor = amIWhite(updatedRoomData) ? "w" : "b";
-    // alert(myColor);
 
     if (myColor === "w") {
         timeLeftTop = updatedRoomData["time-left-black"];
@@ -201,8 +200,6 @@ function updateTimeLeft(updatedRoomData, chessGame) {
         timeLeftTop = updatedRoomData["time-left-white"];
         timeLeftBottom = updatedRoomData["time-left-black"];
     }
-
-    // alert(chessGame.turn());
 
     if (chessGame.turn() === myColor) {
         timeLeftBottom -= timeFromLastMove;
@@ -218,10 +215,6 @@ function updateTimeLeft(updatedRoomData, chessGame) {
 
 let timer = null;
 function recreateTimer(chessGame, roomData) {
-    console.log(roomData["result"]);
-
-    // alert("recreate timer");
-
     if (timer !== null) {
         clearInterval(timer);
     }
@@ -233,7 +226,6 @@ function timerFunc(chessGame, roomData) {
     if (gameFinished) {
         return;
     }
-    console.log(gameFinished);
 
     const myColor = amIWhite(roomData) ? "w" : "b";
 
@@ -276,12 +268,12 @@ async function onDrawButtonClicked(event) {
 }
 
 async function main() {
-    const chessGame
-        = new Chess();
-
     if (!userIsAuthenticated()) {
         window.location.href = "login.html"
     }
+
+    const chessGame
+        = new Chess();
 
     const props = {
         position: FEN.start,
