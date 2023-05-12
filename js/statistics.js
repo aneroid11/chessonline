@@ -14,7 +14,10 @@ async function main() {
             const newArticle = document.createElement("article");
             newArticle.className = "statistics__game-result";
             let htmlStr = "";
-            htmlStr += value["statistics-string"].replaceAll("\n", "<br>");
+            htmlStr += value["statistics-string"]
+                .replaceAll(">", "&gt;")
+                .replaceAll("<", "&lt;")
+                .replaceAll("\n", "<br>")
             newArticle.innerHTML = htmlStr;
 
             if (value["result"] === "draw") {
