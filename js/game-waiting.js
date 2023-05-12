@@ -173,7 +173,9 @@ function enableMoveInput(chessGame) {
     );
 }
 
-async function setupGame(chessGame) {
+let onRoomUpdateFinished = true;
+
+async function setupGame(chessGame, updatedRoomData) {
     document.getElementById("game-link").style.display = "none";
     document.getElementById("game-cancel-button").style.display = "none";
     document.getElementById("game-draw-button").style.display = "inline-block";
@@ -181,14 +183,18 @@ async function setupGame(chessGame) {
 
     enableMoveInput(chessGame);
 
-    if (roomData["game-start"] === undefined) {
+    if (updatedRoomData["game-start"] === undefined) {
+        // alert("roomData game-start === undefined. update room data");
+
+        // while (!onRoomUpdateFinished) {}
+
         // start the game
         await updateRoomData(gameId, {
             "game-start": Math.floor(Date.now() / 1000),
             // "last-move": Math.floor(Date.now() / 1000),
             "last-move": Date.now(),
-            "time-left-white": roomData["time-limit"] * 60,
-            "time-left-black": roomData["time-limit"] * 60
+            "time-left-white": updatedRoomData["time-limit"] * 60,
+            "time-left-black": updatedRoomData["time-limit"] * 60
         });
     }
 }
@@ -311,6 +317,69 @@ function onConnect(chessGame) {
     enableMoveInput(chessGame);
 }
 
+async function onRoomUpdate(chessGame, updatedRoomData) {
+    alert("onRoomUpdate started");
+
+    onRoomUpdateFinished = false;
+
+    if (
+        typeof updatedRoomData["white"] === "string" &&
+        typeof updatedRoomData["black"] === "string"
+    ) {
+        // console.log("new update");
+        alert("new update");
+        // alert("updatedRoomData['game-start'] == " + updatedRoomData["game-start"]);
+
+        if (roomData["moves"] === updatedRoomData["moves"]) {
+            // update everything
+            await updateUserNames(updatedRoomData);
+            await updateGameField(updatedRoomData); // remove await?
+            chessGame.load_pgn(roomData["moves"]);
+            updateTimeLeft(updatedRoomData, chessGame);
+            // await window.chessboard.setPosition(chessGame.fen(), true);
+            await window.chessboard.setPosition(chessGame.fen(), true); // remove await?
+            // await setupGame(chessGame); // remove await?
+            await setupGame(chessGame, updatedRoomData); // remove await?
+        }
+        else {
+            // update only position and time left
+            if (updateBoard) {
+                // it was not our move.
+                chessGame.load_pgn(updatedRoomData["moves"]);
+                // await window.chessboard.setPosition(chessGame.fen(), true);
+                window.chessboard.setPosition(chessGame.fen(), true);
+                updateTimeLeft(updatedRoomData, chessGame);
+            }
+            else {
+                updateBoard = true;
+            }
+            // await window.chessboard.setPosition(updatedRoomData["position"], true);
+        }
+
+        if (updatedRoomData["offer-draw"] !== undefined) {
+            if (updatedRoomData["offer-draw"] === "offered" &&
+                (
+                    !iAmWhite && updatedRoomData["draw-offerer"] === "w" ||
+                    iAmWhite && updatedRoomData["draw-offerer"] === "b"
+                )
+            ) {
+                // document.getElementById("game-message").style.display = "inline-block";
+                document.getElementById("game-message").textContent = "Draw?";
+            }
+        }
+        if (updatedRoomData["result"] !== undefined) {
+            gameFinished = true;
+            showGameResult(updatedRoomData["result"]);
+            window.chessboard.disableMoveInput();
+        }
+
+        // alert("roomData = updatedRoomData");
+        roomData = updatedRoomData;
+    }
+
+    onRoomUpdateFinished = true;
+}
+
 async function main() {
     if (!userIsAuthenticated()) {
         window.location.href = "login.html"
@@ -355,59 +424,7 @@ async function main() {
 
         setOnConnectAndDisconnect(onConnect.bind(null, chessGame), onDisconnect);
 
-        listenForRoomUpdates(gameId, async (updatedRoomData) => {
-            if (
-                typeof updatedRoomData["white"] === "string" &&
-                typeof updatedRoomData["black"] === "string"
-            ) {
-                console.log("new update");
-                if (roomData["moves"] === updatedRoomData["moves"]) {
-                    // update everything
-
-                    await updateUserNames(updatedRoomData);
-                    await updateGameField(updatedRoomData); // remove await?
-                    chessGame.load_pgn(roomData["moves"]);
-                    updateTimeLeft(updatedRoomData, chessGame);
-                    // await window.chessboard.setPosition(chessGame.fen(), true);
-                    await window.chessboard.setPosition(chessGame.fen(), true); // remove await?
-                    await setupGame(chessGame); // remove await?
-                }
-                else {
-                    // update only position and time left
-
-                    if (updateBoard) {
-                        // it was not our move.
-                        chessGame.load_pgn(updatedRoomData["moves"]);
-                        // await window.chessboard.setPosition(chessGame.fen(), true);
-                        window.chessboard.setPosition(chessGame.fen(), true);
-                        updateTimeLeft(updatedRoomData, chessGame);
-                    }
-                    else {
-                        updateBoard = true;
-                    }
-                    // await window.chessboard.setPosition(updatedRoomData["position"], true);
-                }
-
-                if (updatedRoomData["offer-draw"] !== undefined) {
-                    if (updatedRoomData["offer-draw"] === "offered" &&
-                        (
-                            !iAmWhite && updatedRoomData["draw-offerer"] === "w" ||
-                            iAmWhite && updatedRoomData["draw-offerer"] === "b"
-                        )
-                    ) {
-                        // document.getElementById("game-message").style.display = "inline-block";
-                        document.getElementById("game-message").textContent = "Draw?";
-                    }
-                }
-                if (updatedRoomData["result"] !== undefined) {
-                    gameFinished = true;
-                    showGameResult(updatedRoomData["result"]);
-                    window.chessboard.disableMoveInput();
-                }
-
-                roomData = updatedRoomData;
-            }
-        });
+        listenForRoomUpdates(gameId, onRoomUpdate.bind(null, chessGame));
 
         await connectCurrUserToRoom(gameId, roomData);
     }
