@@ -6,7 +6,7 @@ import {
     INPUT_EVENT_TYPE
 } from "https://cdn.jsdelivr.net/npm/cm-chessboard@7/src/cm-chessboard/Chessboard.js";
 import {Chess} from "https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.13.4/chess.js";
-import {getRoomData, connectCurrUserToRoom, updateRoomData, listenForRoomUpdates, amIWhite} from "./api/rooms.js";
+import {getRoomData, connectCurrUserToRoom, updateRoomData, listenForRoomUpdates, amIWhite, getServerTime} from "./api/rooms.js";
 import {getProfileInfoByUid} from "./api/users.js";
 
 let gameId = null;
@@ -114,7 +114,7 @@ async function setupGame(chessGame) {
                     updateBoard = false;
                     event.chessboard.setPosition(chessGame.fen());
 
-                    const prevLastMove = roomData["last-move"];
+                    const prevLastMove = Math.floor(roomData["last-move"] / 1000);
                     const timeSpent = Math.floor(Date.now() / 1000) - prevLastMove;
                     const prevTimeLeftWhite = roomData["time-left-white"];
                     const prevTimeLeftBlack = roomData["time-left-black"];
@@ -127,11 +127,13 @@ async function setupGame(chessGame) {
                     else {
                         newTimeLeftBlack -= timeSpent;
                     }
+                    const lastMoveTime = getServerTime();
                     updateRoomData(
                         gameId,
                         {
                             "moves": chessGame.pgn(),
-                            "last-move": Math.floor(Date.now() / 1000),
+                            // "last-move": Math.floor(Date.now() / 1000),
+                            "last-move": lastMoveTime,
                             "time-left-white": newTimeLeftWhite,
                             "time-left-black": newTimeLeftBlack
                         }
@@ -166,7 +168,8 @@ async function setupGame(chessGame) {
         // start the game
         await updateRoomData(gameId, {
             "game-start": Math.floor(Date.now() / 1000),
-            "last-move": Math.floor(Date.now() / 1000),
+            // "last-move": Math.floor(Date.now() / 1000),
+            "last-move": Date.now(),
             "time-left-white": roomData["time-limit"] * 60,
             "time-left-black": roomData["time-limit"] * 60
         });
@@ -189,7 +192,7 @@ function updateTimeLeft(updatedRoomData, chessGame) {
         return;
     }
 
-    const timeFromLastMove = Math.floor(Date.now() / 1000) - updatedRoomData["last-move"];
+    const timeFromLastMove = Math.floor(Date.now() / 1000) - Math.floor(updatedRoomData["last-move"] / 1000);
     const myColor = amIWhite(updatedRoomData) ? "w" : "b";
 
     if (myColor === "w") {

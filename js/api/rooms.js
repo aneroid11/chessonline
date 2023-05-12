@@ -5,7 +5,7 @@ import {
     push,
     get,
     child,
-    update, onValue
+    update, onValue, serverTimestamp
 } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
 import {getAuth} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js";
 // import {FEN} from "https://cdn.jsdelivr.net/npm/cm-chessboard@7/src/cm-chessboard/Chessboard.js";
@@ -21,6 +21,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig)
 const db = getDatabase(app)
+
 const gameRoomsRef = ref(db, '/rooms')
 const auth = getAuth()
 
@@ -116,6 +117,11 @@ async function getAllRooms() {
     }
 }
 
+function getServerTime() {
+    return serverTimestamp();
+}
+
 export {
-    createGameRoom, getRoomData, connectCurrUserToRoom, listenForRoomUpdates, amIWhite, updateRoomData, getAllRooms
+    createGameRoom, getRoomData, connectCurrUserToRoom, listenForRoomUpdates, amIWhite, updateRoomData, getAllRooms,
+    getServerTime
 }
