@@ -6,7 +6,15 @@ import {
     INPUT_EVENT_TYPE
 } from "https://cdn.jsdelivr.net/npm/cm-chessboard@7/src/cm-chessboard/Chessboard.js";
 import {Chess} from "https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.13.4/chess.js";
-import {getRoomData, connectCurrUserToRoom, updateRoomData, listenForRoomUpdates, amIWhite, getServerTime} from "./api/rooms.js";
+import {
+    getRoomData,
+    connectCurrUserToRoom,
+    updateRoomData,
+    listenForRoomUpdates,
+    amIWhite,
+    getServerTime,
+    setOnConnectAndDisconnect
+} from "./api/rooms.js";
 import {getProfileInfoByUid} from "./api/users.js";
 
 let gameId = null;
@@ -285,6 +293,8 @@ async function main() {
         }
     }
     window.chessboard = new Chessboard(document.getElementById("chess-board"), props);
+
+    setOnConnectAndDisconnect(() => {}, () => {});
 
     const gameLink = document.getElementById("game-link")
     gameLink.textContent = window.location.href
