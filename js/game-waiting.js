@@ -96,9 +96,81 @@ function showGameResult(result) {
     document.getElementById("game-waiting-top-time-left").textContent = "--:--"
     document.getElementById("game-waiting-bottom-time-left").textContent = "--:--"
     document.getElementById("game-message").textContent = msg;
-    document.getElementById("game-message").style.display = "block";
+    // document.getElementById("game-message").style.display = "block";
     document.getElementById("game-draw-button").style.display = "none";
     document.getElementById("game-resign-button").style.display = "none";
+}
+
+function moveHandler(chessGame, event) {
+    switch (event.type) {
+        case INPUT_EVENT_TYPE.moveInputStarted:
+            // return `true`, if input is accepted/valid, `false` aborts the interaction, the piece will not move
+            return true
+        case INPUT_EVENT_TYPE.validateMoveInput:
+            // return true, if input is accepted/valid, `false` takes the move back
+
+            const currTurn = chessGame.turn();
+            // pawns are promoted to Queens only.
+            const result = chessGame.move({"from": event.squareFrom, "to": event.squareTo, "promotion": "q"});
+            if (result) {
+                updateBoard = false;
+                event.chessboard.setPosition(chessGame.fen());
+
+                const prevLastMove = Math.floor(roomData["last-move"] / 1000);
+                const timeSpent = Math.floor(Date.now() / 1000) - prevLastMove;
+                const prevTimeLeftWhite = roomData["time-left-white"];
+                const prevTimeLeftBlack = roomData["time-left-black"];
+                let newTimeLeftWhite = prevTimeLeftWhite;
+                let newTimeLeftBlack = prevTimeLeftBlack;
+
+                if (currTurn === "w") {
+                    newTimeLeftWhite -= timeSpent;
+                }
+                else {
+                    newTimeLeftBlack -= timeSpent;
+                }
+                const lastMoveTime = getServerTime();
+                updateRoomData(
+                    gameId,
+                    {
+                        "moves": chessGame.pgn(),
+                        // "last-move": Math.floor(Date.now() / 1000),
+                        "last-move": lastMoveTime,
+                        "time-left-white": newTimeLeftWhite,
+                        "time-left-black": newTimeLeftBlack
+                    }
+                );
+
+                if (chessGame.game_over()) {
+                    if (chessGame.in_draw() || chessGame.in_stalemate() || chessGame.in_threefold_repetition()) {
+                        finishGame("draw");
+                    }
+                    else {
+                        if (chessGame.turn() === "w") {
+                            finishGame("black");
+                        }
+                        else {
+                            finishGame("white");
+                        }
+                    }
+
+                }
+
+                return true;
+            }
+
+            return false;
+        case INPUT_EVENT_TYPE.moveInputCanceled:
+            // console.log(`moveInputCanceled`)
+            break;
+    }
+}
+
+function enableMoveInput(chessGame) {
+    window.chessboard.enableMoveInput(
+        moveHandler.bind(null, chessGame),
+        amIWhite(roomData) ? COLOR.white : COLOR.black
+    );
 }
 
 async function setupGame(chessGame) {
@@ -107,70 +179,7 @@ async function setupGame(chessGame) {
     document.getElementById("game-draw-button").style.display = "inline-block";
     document.getElementById("game-resign-button").style.display = "inline-block";
 
-    window.chessboard.enableMoveInput((event) => {
-        switch (event.type) {
-            case INPUT_EVENT_TYPE.moveInputStarted:
-                // return `true`, if input is accepted/valid, `false` aborts the interaction, the piece will not move
-                return true
-            case INPUT_EVENT_TYPE.validateMoveInput:
-                // return true, if input is accepted/valid, `false` takes the move back
-
-                const currTurn = chessGame.turn();
-                // pawns are promoted to Queens only.
-                const result = chessGame.move({"from": event.squareFrom, "to": event.squareTo, "promotion": "q"});
-                if (result) {
-                    updateBoard = false;
-                    event.chessboard.setPosition(chessGame.fen());
-
-                    const prevLastMove = Math.floor(roomData["last-move"] / 1000);
-                    const timeSpent = Math.floor(Date.now() / 1000) - prevLastMove;
-                    const prevTimeLeftWhite = roomData["time-left-white"];
-                    const prevTimeLeftBlack = roomData["time-left-black"];
-                    let newTimeLeftWhite = prevTimeLeftWhite;
-                    let newTimeLeftBlack = prevTimeLeftBlack;
-
-                    if (currTurn === "w") {
-                        newTimeLeftWhite -= timeSpent;
-                    }
-                    else {
-                        newTimeLeftBlack -= timeSpent;
-                    }
-                    const lastMoveTime = getServerTime();
-                    updateRoomData(
-                        gameId,
-                        {
-                            "moves": chessGame.pgn(),
-                            // "last-move": Math.floor(Date.now() / 1000),
-                            "last-move": lastMoveTime,
-                            "time-left-white": newTimeLeftWhite,
-                            "time-left-black": newTimeLeftBlack
-                        }
-                    );
-
-                    if (chessGame.game_over()) {
-                        if (chessGame.in_draw() || chessGame.in_stalemate() || chessGame.in_threefold_repetition()) {
-                            finishGame("draw");
-                        }
-                        else {
-                            if (chessGame.turn() === "w") {
-                                finishGame("black");
-                            }
-                            else {
-                                finishGame("white");
-                            }
-                        }
-
-                    }
-
-                    return true;
-                }
-
-                return false;
-            case INPUT_EVENT_TYPE.moveInputCanceled:
-                // console.log(`moveInputCanceled`)
-                break;
-        }
-    }, amIWhite(roomData) ? COLOR.white : COLOR.black);
+    enableMoveInput(chessGame);
 
     if (roomData["game-start"] === undefined) {
         // start the game
@@ -278,6 +287,30 @@ async function onDrawButtonClicked(event) {
     }
 }
 
+const DISCONNECTED_MESSAGE = "You are disconnected and can't make moves!"
+function onDisconnect() {
+    if (roomData["game-start"] === undefined) {
+        return;
+    }
+
+    const messageElem = document.getElementById("game-message");
+    messageElem.textContent = DISCONNECTED_MESSAGE;
+    window.chessboard.disableMoveInput();
+}
+
+function onConnect(chessGame) {
+    if (roomData["game-start"] === undefined) {
+        return;
+    }
+
+    const messageElem = document.getElementById("game-message");
+
+    if (messageElem.textContent === DISCONNECTED_MESSAGE) {
+        messageElem.textContent = "";
+    }
+    enableMoveInput(chessGame);
+}
+
 async function main() {
     if (!userIsAuthenticated()) {
         window.location.href = "login.html"
@@ -293,8 +326,6 @@ async function main() {
         }
     }
     window.chessboard = new Chessboard(document.getElementById("chess-board"), props);
-
-    setOnConnectAndDisconnect(() => {}, () => {});
 
     const gameLink = document.getElementById("game-link")
     gameLink.textContent = window.location.href
@@ -321,6 +352,8 @@ async function main() {
     }
     else {
         iAmWhite = amIWhite(roomData); // seems like this iAmWhite is perfectly valid.
+
+        setOnConnectAndDisconnect(onConnect.bind(null, chessGame), onDisconnect);
 
         listenForRoomUpdates(gameId, async (updatedRoomData) => {
             if (
@@ -362,7 +395,7 @@ async function main() {
                             iAmWhite && updatedRoomData["draw-offerer"] === "b"
                         )
                     ) {
-                        document.getElementById("game-message").style.display = "inline-block";
+                        // document.getElementById("game-message").style.display = "inline-block";
                         document.getElementById("game-message").textContent = "Draw?";
                     }
                 }
