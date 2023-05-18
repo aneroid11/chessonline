@@ -8,7 +8,6 @@ import {
     update, onValue, serverTimestamp, onDisconnect
 } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
 import {getAuth} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js";
-// import {FEN} from "https://cdn.jsdelivr.net/npm/cm-chessboard@7/src/cm-chessboard/Chessboard.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyDCUea-F9S2qmzHY3ib0Paav9dBYq2rXYI",
@@ -19,8 +18,8 @@ const firebaseConfig = {
     appId: "1:506748179483:web:f7f5f69c0e6c1a812d94be"
 };
 
-const app = initializeApp(firebaseConfig)
-const db = getDatabase(app)
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
 const connectedRef = ref(db, ".info/connected");
 const gameRoomsRef = ref(db, '/rooms')
 const auth = getAuth()
