@@ -1,0 +1,8 @@
+.header__site-name {
+    text-decoration: none;
+    display: inline-block;
+    color: white;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 36px;
+}

@@ -1,0 +1,10 @@
+@import url('__name/opponent-info__name.css');
+@import url('__time/opponent-info__time.css');
+
+.opponent-info {
+    width: 100%;
+    height: 30px;
+    margin: 5px;
+    color: white;
+    font-size: 20px;
+}

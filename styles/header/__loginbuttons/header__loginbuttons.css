@@ -1,0 +1,16 @@
+/* all links inside class="header__loginbuttons" */
+.header__loginbuttons {
+    text-align: center;
+    display: inline-block;
+    float: right;
+}
+
+.header__loginbuttons, a {
+    /*margin-bottom: 5px*/
+}
+
+/*
+    text-decoration: none;
+    color: white;
+    background: #4C4C4C;
+ */

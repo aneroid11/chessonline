@@ -1,0 +1,20 @@
+.header__slogan {
+    display: inline-block;
+    color: white;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 39px;
+}
+
+.header__slogan h1 {
+    margin-left: 20px;
+    font-size: 20px;
+    display: inline-block;
+}
+
+@media only screen and (max-width: 630px) {
+    .header__slogan h1 {
+        display: none;
+    }
+}

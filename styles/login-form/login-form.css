@@ -1,0 +1,17 @@
+@import url("./__field/login-form__field.css");
+
+.login-form {
+    margin-top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 300px;
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.login-form label {
+    font-size: 18px;
+    color: white;
+}

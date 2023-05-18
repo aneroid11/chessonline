@@ -1,0 +1,17 @@
+.game-creation-form__color-option {
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+    color: black;
+    background-color: #D9D9D9;
+    border-radius: 5px;
+    padding: 3px;
+    margin: 3px;
+    text-align: center;
+    font-size: 16px;
+}
+
+.game-creation-form__color-option img {
+    width: inherit;
+    height: inherit;
+}

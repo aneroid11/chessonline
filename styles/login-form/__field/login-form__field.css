@@ -1,0 +1,15 @@
+.login-form__field {
+    text-align: center;
+    font-size: 18px;
+    padding: 12px 20px;
+    font-weight: 400;
+    color: white;
+    background-color: #342E2E;
+    border-radius: 3px;
+    border: 1px solid white;
+    outline: none;
+}
+
+.login-form__field:focus {
+    border: 3px solid white;
+}

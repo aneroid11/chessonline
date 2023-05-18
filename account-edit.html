@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/general.css">
+    <script type="module" src="js/account-edit.js"></script>
+    <title>Chess online</title>
+</head>
+<body>
+<script>0</script>
+    <header class="header">
+        <div class="header__slogan">
+            <a href="index-logged.html" class="header__site-name">
+                CHESS
+            </a>
+            <h1>Play Chess Online on the #1 Site!</h1>
+        </div>
+    </header>
+    <main>
+        <form id="acc-edit-form" action="" class="login-form">
+            <img width="80" style="margin-left: auto; margin-right: auto;" src="img/account_circle.svg" alt="My account">
+            <label id="acc-edit-form-error"></label>
+            <input id="acc-edit-name" class="login-form__field" type="text" maxlength="20"
+                   value="" placeholder="username" name="username" required>
+            <input id="acc-edit-password" class="login-form__field" type="password" minlength="6"
+                   maxlength="64" placeholder="password" name="password">
+            <input id="acc-edit-new-password" class="login-form__field" type="password" minlength="6"
+                   maxlength="64" placeholder="new password" name="new_password">
+            <input id="acc-edit-repeat-password" class="login-form__field" type="password" minlength="6"
+                   maxlength="64" placeholder="repeat new password" name="repeat_new_password">
+            <input id="acc-edit-save-changes" class="button button_color_green" type="submit" value="Save Changes">
+            <a href="account.html" class="button button_color_gray">Cancel</a>
+        </form>
+    </main>
+    <footer class="footer">
+        (c) 2023 Yermakov Anton
+    </footer>
+</body>
+</html>

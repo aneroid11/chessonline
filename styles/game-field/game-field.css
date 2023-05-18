@@ -1,0 +1,15 @@
+.game-field {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    text-align: center;
+    width: 330px;
+}
+
+.game-field, a {
+    margin-top: 10px;
+}
+
+.game-field, h1 {
+    color: white;
+}

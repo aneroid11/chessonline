@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/general.css">
+    <script type="module" src="js/login.js"></script>
+    <title>Chess online</title>
+</head>
+<body>
+    <script>0</script>
+    <header class="header">
+        <div class="header__slogan">
+            <a href="index.html" class="header__site-name">
+                CHESS
+            </a>
+            <h1>Play Chess Online on the #1 Site!</h1>
+        </div>
+    </header>
+    <main>
+        <form id="login-form" style="padding-top: 130px" action="index-logged.html" class="login-form">
+            <label id="login-error"></label>
+            <input id="login-email" class="login-form__field" type="email" maxlength="30" placeholder="email" name="email" required>
+            <input id="login-password" class="login-form__field" type="password" maxlength="64" placeholder="password" name="password" required>
+            <input class="button button_color_green" type="submit" value="Log in!">
+        </form>
+    </main>
+    <footer class="footer">
+        (c) 2023 Yermakov Anton
+    </footer>
+</body>
+</html>

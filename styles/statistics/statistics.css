@@ -1,0 +1,16 @@
+@import url("__partition/statistics__partition.css");
+@import url("__results-list/statistics__results-list.css");
+@import url("__game-result/statistics__game-result.css");
+
+.statistics {
+    width: 100%;
+    /*display: table*/
+    display: flex;
+    justify-content: space-around;
+}
+
+@media only screen and (max-width: 960px) {
+    .statistics {
+        display: block;
+    }
+}

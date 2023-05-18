@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap');
+@import url('./header/header.css');
+@import url('./footer/footer.css');
+@import url('./board/board.css');
+@import url('./game-field/game-field.css');
+@import url('./button/button.css');
+@import url('./login-form/login-form.css');
+@import url('./game-creation-form/game-creation-form.css');
+@import url('./statistics/statistics.css');
+@import url('./account-navigation/account-navigation.css');
+@import url('./opponent-info/opponent-info.css');
+@import url("./message/message.css");
+
+body {
+    background: #342E2E;
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+main {
+    padding-bottom: 46px;
+}
+
+input {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 700;
+}

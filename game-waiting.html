@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/general.css">
+    <link rel="stylesheet" href="styles/game-link/game-link.css">
+    <link rel="stylesheet" href="assets/chessboard.css">
+    <script type="module" src="js/game-waiting.js"></script>
+    <title>Chess online</title>
+</head>
+<body>
+<script>0</script>
+    <header class="header">
+        <div class="header__slogan">
+            <a href="index-logged.html" class="header__site-name">
+                CHESS
+            </a>
+            <h1>Play Chess Online on the #1 Site!</h1>
+        </div>
+        <a href="account.html"><img class="header__acc-image" src="img/account_circle.svg" alt="My account"></a>
+    </header>
+    <main>
+        <p id="game-link" class="game-link">Loading...</p>
+        <section class="game-field">
+            <h1 id="game-message"></h1>
+            <div class="opponent-info">
+                <div class="opponent-info__name" id="game-waiting-top-name">...</div>
+                <div class="opponent-info__time" id="game-waiting-top-time-left">...</div>
+            </div>
+            <div id="chess-board">
+            </div>
+            <div class="opponent-info">
+                <div class="opponent-info__name" id="game-waiting-bottom-name">...</div>
+                <div class="opponent-info__time" id="game-waiting-bottom-time-left">...</div>
+            </div>
+            <a id="game-cancel-button" href="index-logged.html" class="button button_color_gray">
+                Cancel
+            </a>
+            <a id="game-draw-button" style="display: none; width: 100px"
+               class="button button_color_green" href="">Draw</a>
+            <a id="game-resign-button" style="display: none; width: 100px"
+               class="button button_color_gray" href="game-finished.html">Resign</a>
+        </section>
+    </main>
+    <footer class="footer">
+        (c) 2023 Yermakov Anton
+    </footer>
+    <script type="module" src="js/game-waiting.js"></script>
+</body>
+</html>
